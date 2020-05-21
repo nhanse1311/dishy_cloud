@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_top_chef"
+    android:orientation="horizontal"
+    android:layout_marginTop="@dimen/dp5"
+    android:layout_width="match_parent"
+    android:weightSum="10"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/txt_order_chef"
+        android:text="1"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/dp5"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"
+        android:textSize="@dimen/sp10"
+        android:background="@drawable/custom_order_top_6"
+        android:layout_width="@dimen/dp20"
+        android:layout_height="@dimen/dp20" />
+
+    <LinearLayout
+        android:layout_marginLeft="@dimen/dp5"
+        android:weightSum="10"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/riv_avatar_chef"
+            android:src="@drawable/img_check"
+            android:scaleType="fitXY"
+            app:riv_corner_radius="30dip"
+            app:riv_border_width="2dip"
+            app:riv_border_color="@color/colorGray"
+            app:riv_mutate_background="true"
+            app:riv_oval="true"
+
+            android:layout_height="@dimen/dp60"
+            android:layout_width="@dimen/dp60"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_weight="8"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/txt_name_chef"
+                android:text="Nguyen Thanh Nhan"
+                android:textStyle="bold"
+                android:textSize="@dimen/sp16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_favorite"
+                    android:layout_width="@dimen/dp12"
+                    android:layout_height="@dimen/dp12"/>
+                <TextView
+                    android:id="@+id/txt_numer_like"
+                    android:text="1000 người thích"
+                    android:layout_marginLeft="@dimen/dp3"
+                    android:textSize="@dimen/sp12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_description"
+                    android:layout_width="@dimen/dp12"
+                    android:layout_height="@dimen/dp12"/>
+                <TextView
+                    android:id="@+id/txt_numer_recipes"
+                    android:text="50 công thức"
+                    android:layout_marginLeft="@dimen/dp3"
+                    android:textSize="@dimen/sp12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+        <ImageView
+            android:layout_gravity="center_vertical|right"
+            android:src="@drawable/ic_keyboard_arrow_right"
+            android:layout_weight="1.5"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>

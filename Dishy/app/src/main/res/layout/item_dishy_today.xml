@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_marginLeft="@dimen/dp5"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/img_dishy_today"
+            android:src="@drawable/img_check"
+            android:scaleType="fitXY"
+            android:padding="2dp"
+            android:layout_width="@dimen/dp150"
+            android:layout_height="@dimen/dp120" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp60"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="3.5dp"
+            android:layout_marginRight="3.5dp"
+            android:alpha="0.3"
+            android:background="@color/colorBlack"
+            android:layout_height="@dimen/dp44"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp60"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="3.5dp"
+            android:layout_marginRight="3.5dp"
+            android:layout_height="@dimen/dp44">
+            <LinearLayout
+                android:background="#FF9800"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_width="@dimen/dp3"
+                android:layout_height="match_parent"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/dp3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txt_name_dishy_today"
+                    android:text="Cơm gà"
+                    style="@style/AudioFileInfoOverlayText"
+                    android:textStyle="bold"
+                    android:layout_marginRight="@dimen/dp5"
+                    android:textSize="@dimen/sp16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/txt_time_dishy_today"
+                    android:text="10 lượt thích"
+                    style="@style/AudioFileInfoOverlayText"
+                    android:layout_marginBottom="@dimen/dp3"
+                    android:layout_marginRight="@dimen/dp5"
+                    android:textSize="@dimen/sp14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/dp150"
+            android:layout_height="120dp"
+            android:src="@drawable/custom_frame_border_image" />
+    </FrameLayout>
+</LinearLayout>

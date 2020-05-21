@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/colorWhite"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/img_do_recipe"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"/>
+    <LinearLayout
+        android:id="@+id/ll_dots_rcv_do"
+        android:layout_marginTop="@dimen/dp10"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_marginRight="@dimen/dp5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_dot_one"
+                android:src="@drawable/img_check"
+                android:scaleType="fitXY"
+                android:padding="1.3dp"
+                android:layout_width="@dimen/dp50"
+                android:layout_height="@dimen/dp50"/>
+            <ImageView
+                android:src="@drawable/custom_frame_input_important"
+                android:layout_width="@dimen/dp50"
+                android:layout_height="@dimen/dp50"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_dot_wto"
+                android:src="@drawable/img_check"
+                android:scaleType="fitXY"
+                android:padding="1.3dp"
+                android:layout_width="@dimen/dp50"
+                android:layout_height="@dimen/dp50"/>
+            <ImageView
+                android:src="@drawable/custom_frame_input_important"
+                android:layout_width="@dimen/dp50"
+                android:layout_height="@dimen/dp50"/>
+        </FrameLayout>
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/txt_repair_do"
+        android:layout_marginTop="@dimen/dp10"
+        android:text="Công đoạn chuẩn bị"
+        android:textStyle="bold"
+        android:paddingLeft="@dimen/dp10"
+        android:paddingRight="@dimen/dp10"
+        android:textColor="#4CAF50"
+        android:textSize="@dimen/sp16"
+        android:layout_marginLeft="@dimen/dp2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/txt_make_step_des_rcv_do"
+        android:inputType="textMultiLine"
+        android:layout_marginTop="@dimen/dp10"
+        android:paddingLeft="@dimen/dp10"
+        android:paddingRight="@dimen/dp10"
+        android:textSize="@dimen/sp18"
+        android:layout_marginLeft="@dimen/dp2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

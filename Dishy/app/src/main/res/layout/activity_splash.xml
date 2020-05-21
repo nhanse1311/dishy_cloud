@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context=".activities.SplashActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <pl.droidsonroids.gif.GifImageView
+            android:padding="41dp"
+            android:src="@drawable/splash_cook"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:src="@drawable/custom_splash_circle_white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <pl.droidsonroids.gif.GifImageView
+            android:src="@drawable/loading"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/dp100"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp100"/>
+        <TextView
+            android:text="DISHY"
+            android:textSize="30sp"
+            android:gravity="bottom|center_horizontal"
+            android:layout_marginBottom="150dp"
+            android:fontFamily="casual"
+            android:textColor="@color/colorMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
+
+</LinearLayout>

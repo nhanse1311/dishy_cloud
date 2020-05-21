@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    tools:context=".fragments.EditOneFragment">
+
+    <ScrollView
+        android:layout_weight="9"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_marginLeft="@dimen/dp12"
+                android:layout_marginTop="@dimen/dp5"
+                android:layout_marginRight="@dimen/dp10"
+                android:text="I.Thông Tin Chung"
+                android:textSize="@dimen/sp18"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp150"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_marginRight="@dimen/dp10"
+                android:gravity="center">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/img_avatar_recipe_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="1.5dp"
+                        android:paddingTop="2dp"
+                        android:scaleType="fitXY"
+                        android:paddingRight="1.5dp"
+                        android:paddingBottom="@dimen/dp2" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/custom_frame_border" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_marginRight="@dimen/dp10"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/edt_name_recipe_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/custom_frame_input"
+                        android:hint="Nhập tên công thức"
+                        android:padding="@dimen/dp12"
+                        android:textSize="@dimen/sp16" />
+                </FrameLayout>
+
+                <EditText
+                    android:id="@+id/edt_content_recipe_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp130"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:background="@drawable/custom_frame_input"
+                    android:gravity="top"
+                    android:hint="@string/nh_p_n_i_dung_c_ng_th_c"
+                    android:padding="@dimen/dp12"
+                    android:textSize="@dimen/sp16" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:gravity="center_vertical"
+                    android:weightSum="10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dp0"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6.5"
+                        android:text="Đây là công thức nấu ăn cho"
+                        android:textSize="@dimen/sp16"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/edt_number_eater_edit"
+                        android:layout_width="@dimen/dp0"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp10"
+                        android:layout_marginRight="@dimen/dp10"
+                        android:background="@drawable/custom_frame_input_important"
+                        android:gravity="center"
+                        android:hint="0"
+                        android:inputType="number"
+                        android:padding="@dimen/dp5"
+                        android:textSize="@dimen/sp16" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="người"
+                        android:textSize="@dimen/sp16"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:weightSum="10"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dp0"
+                        android:layout_weight="5.9"
+                        android:layout_height="wrap_content"
+                        android:text="Thời gian nấu"
+                        android:textSize="@dimen/sp16"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/edt_time_cooking_edit"
+                        android:layout_weight="1.7"
+                        android:layout_width="@dimen/dp0"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dp10"
+                        android:background="@drawable/custom_frame_input"
+                        android:gravity="center"
+                        android:hint="0"
+                        android:inputType="number"
+                        android:padding="@dimen/dp5"
+                        android:textSize="@dimen/sp16" />
+
+                    <TextView
+                        android:layout_width="@dimen/dp0"
+                        android:layout_height="wrap_content"
+                        android:text="phút"
+                        android:layout_weight="2"
+                        android:textSize="@dimen/sp16"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:layout_marginBottom="@dimen/dp15"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dp5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Độ Khó"
+                        android:textSize="@dimen/sp16"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/dp8"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/txt_level_repice_edit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:layout_weight="9.5"
+                            android:layout_marginLeft="@dimen/dp2"
+                            android:text="@string/d"
+                            android:textSize="@dimen/sp16"
+                            />
+                        <ImageView
+                            android:src="@drawable/ic_arrow_drop_down"
+                            android:layout_weight="0.5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:background="@color/colorGray"
+                        android:layout_width="match_parent"
+                        android:layout_marginRight="@dimen/dp14"
+                        android:layout_height="@dimen/dp1"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp0">
+        <Button
+            android:id="@+id/btn_next_step_edit"
+            android:text="@string/next_step"
+            android:textColor="@color/colorWhite"
+            android:layout_marginLeft="@dimen/dp30"
+            android:layout_marginRight="@dimen/dp30"
+            android:background="@drawable/custom_button_next_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>

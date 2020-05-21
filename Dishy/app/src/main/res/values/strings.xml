@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Dishy</string>
+    <string name="title_bottom_home">Trang Chủ</string>
+    <string name="title_bottom_notify">Thông Báo</string>
+    <string name="title_bottom_user">Cá Nhân</string>
+    <string name="title_bottom_create_recipe">Tạo Công Thức</string>
+    <string name="title_bottom_history">Lịch Sử</string>
+    <string name="title_bottom_album">Sưu Tập</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="d">Dễ</string>
+    <string name="nh_p_n_i_dung_c_ng_th_c">Nhập nội dung công thức</string>
+    <string name="next_step">Bước tiếp theo</string>
+    <string name="done">Hoàn Tất</string>
+    <string name="danh_s_ch_c_ng_th_c">Danh sách công thức</string>
+    <string name="material">Nguyên liêu</string>
+
+</resources>

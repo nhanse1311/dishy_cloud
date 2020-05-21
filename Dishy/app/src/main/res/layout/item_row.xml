@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/imgHinh_item_row"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:scaleType="fitXY"
+                android:paddingBottom="3.4dp"
+                android:paddingTop="3.4dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:src="@drawable/custom_image_border"
+                ></ImageView>
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/custom_image_border"
+                ></ImageView>
+        </FrameLayout>
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtContent"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textSize="15sp"
+                    android:maxEms="20"
+                    android:textColor="#585858"
+                    android:gravity="center_vertical"
+                    >
+                </TextView>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/avatar_item_row"
+                    android:layout_weight="1"
+                    app:riv_border_color="@color/colorWhite"
+                    app:riv_border_width="@dimen/dp1"
+                    app:riv_corner_radius="@dimen/dp50"
+                    android:layout_width="80px"
+                    android:layout_height="70px"
+                    android:layout_marginRight="@dimen/dp5"
+                    android:scaleType="fitXY"
+                    android:src="@color/colorBlue"/>
+                <LinearLayout
+                    android:layout_weight="9"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/loginName_item_row"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Thanh Nhàn"/>
+
+                        <TextView
+                            android:id="@+id/likeNumber_item_row"
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="@dimen/dp5"
+                            android:layout_height="wrap_content"
+                            android:text="3.4k"/>
+                        <ImageView
+                            android:src="@drawable/ic_favorite"
+                            android:layout_marginLeft="@dimen/dp5"
+                            android:layout_width="15dp"
+                            android:layout_height="12dp"
+                            android:scaleType="fitXY"
+                            android:layout_marginTop="2dp"
+                            android:layout_gravity="center_vertical"
+                            ></ImageView>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+                <ImageView
+                    android:src="@drawable/ic_message_black_24dp"
+                    android:layout_width="15dp"
+                    android:layout_height="12dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="2dp"
+                    ></ImageView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="3dp"
+                    android:gravity="center_vertical"
+                    android:id="@+id/txtTime_item_row">
+                </TextView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

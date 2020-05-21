@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp15"
+    android:layout_marginLeft="@dimen/dp30"
+    android:layout_marginRight="@dimen/dp30"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/txt_order_recipe_ca_save"
+        android:layout_width="@dimen/dp30"
+        android:layout_height="@dimen/dp30"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginRight="@dimen/dp10"
+        android:background="@drawable/custom_frame_order"
+        android:gravity="center"
+        android:padding="@dimen/dp5"
+        android:text="1"
+        android:textSize="@dimen/sp15"
+        android:textStyle="bold" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="2dp">
+
+            <ImageView
+                android:id="@+id/img_recipe_chef_save"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp120"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_check" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp5"
+                android:weightSum="5">
+
+                <TextView
+                    android:id="@+id/txt_name_recipe_chef_save"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp5"
+                    android:layout_weight="3"
+                    android:text="Cánh gà chiên nước mắm"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_option_save"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|right"
+                    android:layout_weight="2"
+                    android:textSize="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp5"
+                    android:textStyle="bold"
+                    android:text="Bỏ theo dõi"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/dp1"
+            android:layout_marginRight="@dimen/dp1"
+            android:background="@drawable/custom_frame_star"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="@dimen/dp3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp15"
+                    android:layout_height="@dimen/dp15"
+                    android:src="@drawable/ic_star_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/dp15"
+                    android:layout_height="@dimen/dp15"
+                    android:src="@drawable/ic_star_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/dp15"
+                    android:layout_height="@dimen/dp15"
+                    android:src="@drawable/ic_star_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/dp15"
+                    android:layout_height="@dimen/dp15"
+                    android:src="@drawable/ic_star_yellow" />
+
+                <ImageView
+                    android:layout_width="@dimen/dp15"
+                    android:layout_height="@dimen/dp15"
+                    android:src="@drawable/ic_star_yellow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp2"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp12"
+                    android:layout_height="@dimen/dp12"
+                    android:src="@drawable/ic_access_time" />
+
+                <TextView
+                    android:id="@+id/txt_time_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp3"
+                    android:text="20 phút"
+                    android:textSize="@dimen/sp12" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp2"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp12"
+                    android:layout_height="@dimen/dp12"
+                    android:src="@drawable/ic_restaurant_menu_red" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp3"
+                    android:text="Dễ"
+                    android:textSize="@dimen/sp12" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="right|center_vertical"
+                android:layout_marginRight="@dimen/dp2"
+                android:layout_marginBottom="@dimen/dp3"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_favorite"
+                    android:layout_width="@dimen/dp12"
+                    android:layout_height="@dimen/dp12"/>
+                <TextView
+                    android:text="2000"
+                    android:textSize="@dimen/sp12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/custom_frame_border_image" />
+    </FrameLayout>
+</LinearLayout>

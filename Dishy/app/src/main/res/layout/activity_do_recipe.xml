@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    android:weightSum="10"
+    tools:context=".activities.DoRecipeActivity">
+
+    <Toolbar
+        android:id="@+id/tb_do_recipe"
+        android:layout_width="match_parent"
+        android:navigationIcon="@drawable/ic_keyboard_return"
+        android:titleTextColor="@color/colorWhite"
+        android:background="@color/colorMain"
+        android:layout_height="@dimen/dp0"
+        android:layout_weight="0.7"/>
+
+    <LinearLayout
+        android:layout_weight="8.3"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp0">
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_do_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:weightSum="3"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp0"
+        android:layout_weight="1">
+        <ImageView
+            android:id="@+id/img_move_back"
+            android:src="@mipmap/ic_arrow_left"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_gravity="center_vertical"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:text="Bước"
+                android:textSize="@dimen/sp15"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txt_step_number"
+                android:text="1"
+                android:fontFamily="sans-serif-black"
+                android:textSize="@dimen/sp25"
+                android:textStyle="bold"
+                android:paddingRight="@dimen/dp20"
+                android:paddingLeft="@dimen/dp20"
+                android:paddingTop="@dimen/dp5"
+                android:paddingBottom="@dimen/dp5"
+                android:background="@drawable/custom_frame_input_important"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_move_next"
+            android:src="@mipmap/ic_arrow_right"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_gravity="center_vertical"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</LinearLayout>

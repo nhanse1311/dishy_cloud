@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:gravity="center"
+    android:padding="@dimen/dp10"
+    android:background="@drawable/custom_bottom_sheet"
+    android:layout_height="wrap_content">
+    <TextView
+        android:text="Chúc mừng bạn đã tạo xong công thức nấu ăn"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btn_ok_success_dialog"
+        android:text="OK"
+        android:background="@drawable/custom_button_next_step"
+        android:layout_marginTop="@dimen/dp20"
+        android:textColor="@color/colorWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
