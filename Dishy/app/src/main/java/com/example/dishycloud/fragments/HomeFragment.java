@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import com.example.dishycloud.R;
 import com.example.dishycloud.activities.ChefActivity;
 import com.example.dishycloud.activities.RecipeActivity;
@@ -23,6 +25,7 @@ import com.example.dishycloud.models.Chef;
 import com.example.dishycloud.models.Dishy;
 import com.example.dishycloud.models.Material;
 import com.example.dishycloud.models.StepMake;
+import com.example.dishycloud.sqlites.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,7 @@ public class HomeFragment extends Fragment {
     private List<StepMake> mStep1, mStep2, mStep3, mStep4, mStep5, mStep6, mStep7;
     private Chef mChef1;
     private View mView;
+    private DatabaseHelper mDatabaseHelper;
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -157,7 +161,9 @@ public class HomeFragment extends Fragment {
         mDishyFollowList.add(new Dishy("Bánh tráng trộn", "https://i.ytimg.com/vi/8lNLepEuR8I/maxresdefault.jpg", "24 phút", 5, "Khó", 100, chef3));
         updateUIRcvDishyFollow(mDishyFollowList);
 
-
+        mDatabaseHelper = new DatabaseHelper(getContext());
+        String token = mDatabaseHelper.getToken();
+        Toast.makeText(getContext(),token,Toast.LENGTH_LONG).show();
     }
 
 

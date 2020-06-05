@@ -7,68 +7,68 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dishycloud.R;
+import com.example.dishycloud.presenters.LoginPresenter;
+import com.example.dishycloud.views.LoginView;
 
-public class SignInActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity implements View.OnClickListener, LoginView {
 
-    private EditText txt_email, txt_password;
+    private EditText mTxtUsername, mTxtPassword;
     private Button btn_SignIn;
+    private LoginPresenter mLoginPresenter;
     private TextView btn_SignUp;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-
         initView();
         initData();
     }
 
     private void initView() {
-        txt_email = findViewById(R.id.txt_email);
-        txt_password = findViewById(R.id.txt_password);
+        mTxtUsername = findViewById(R.id.txt_username_login);
+        mTxtPassword = findViewById(R.id.txt_password_login);
         btn_SignIn = findViewById(R.id.btn_sign_in);
-        btn_SignUp = findViewById(R.id.btn_sign_up);
-
-        txt_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    txt_email.setText("");
-                } else {
-                    txt_email.setText("Enter password");
-                }
-            }
-        });
-
-        txt_password.setTransformationMethod(new PasswordTransformationMethod());
-
-        txt_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    txt_password.setText("");
-                } else {
-                    txt_password.setText("Enter password");
-                }
-            }
-        });
+        btn_SignUp = findViewById(R.id.btn_sign_up_login);
     }
 
     private void initData() {
-        btn_SignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), SignUpActivity.class);
-                startActivity(intent);
-            }
-        });
+        btn_SignIn.setOnClickListener(this);
+
+        mLoginPresenter = new LoginPresenter(this,this);
     }
 
-    public void clickToHome(View view) {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
+
+    private void login() {
+        String username = mTxtUsername.getText().toString().trim();
+        String password = mTxtPassword.getText().toString().trim();
+        mLoginPresenter.onLogin(username,password);
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_sign_in:
+                login();
+                break;
+        }
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        Intent homeIntent = new Intent(SignInActivity.this, HomeActivity.class);
+        this.startActivity(homeIntent);
+        this.finish();
+    }
+
+    @Override
+    public void onLoginFail(String message) {
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
+    }
+
+
 }
