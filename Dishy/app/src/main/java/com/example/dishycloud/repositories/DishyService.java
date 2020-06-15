@@ -18,4 +18,6 @@ public interface DishyService {
 
     @POST(ConfigAPI.Api.LOGIN)
     Call<ResponseBody> login(@Body RequestBody requestBody);
+    @POST(ConfigAPI.Api.REGISTER)
+    Call<ResponseBody> register(@Body RequestBody requestBody);
 }

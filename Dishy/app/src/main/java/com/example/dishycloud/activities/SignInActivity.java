@@ -38,7 +38,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void initData() {
         btn_SignIn.setOnClickListener(this);
-
         mLoginPresenter = new LoginPresenter(this,this);
     }
 
@@ -49,6 +48,17 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         mLoginPresenter.onLogin(username,password);
     }
 
+    public void clickToSignUp(View view){
+        btn_SignUp.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent signUpIntent = new Intent(getApplicationContext(), SignUpActivity.class);
+                startActivity(signUpIntent);
+                finish();
+            }
+        });
+
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
