@@ -5,5 +5,7 @@ public class ConfigAPI {
 
     public interface Api {
         String LOGIN = "Auth/Login";
+        String REGISTER = "Auth/Register";
     }
+
 }
