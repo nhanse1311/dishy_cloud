@@ -6,7 +6,12 @@ public class ConfigAPI {
 
     public interface Api {
         String LOGIN = "Auth/Login";
+<<<<<<< HEAD
         String USER = "Register/GetInformation";
         String RECIPE = "Recipe";
+=======
+        String REGISTER = "Auth/Register";
+>>>>>>> e9987c503e38607b70d19ab5ef2f2a750facb7ef
     }
+
 }

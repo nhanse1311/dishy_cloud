@@ -151,7 +151,8 @@
                 android:text="Đăng ký"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/sp16"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:onClick="clickToSignUp"/>
         </LinearLayout>
 
 

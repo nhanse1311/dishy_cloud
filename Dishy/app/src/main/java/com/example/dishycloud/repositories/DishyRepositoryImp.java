@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 
 import okhttp3.RequestBody;
@@ -69,6 +70,7 @@ public class DishyRepositoryImp implements DishyRepository {
     }
 
     @Override
+<<<<<<< HEAD
     public void getUser(String token, final CallBackData<User> callBackData) {
         ClientApi clientApi = new ClientApi();
 
@@ -132,13 +134,53 @@ public class DishyRepositoryImp implements DishyRepository {
                 }
                 else{
                     callBackData.onFail("Responese: "+response.code()+" - "+response.message());
+=======
+    public void register(final String username, final String password, final String fullname, Context context, final CallBackData<User> callBackData) {
+        ClientApi clientApi = new ClientApi();
+
+        JSONObject newUser = new JSONObject();
+        try {
+            newUser.put("username", username);
+            newUser.put("password", password);
+            newUser.put("fullname", fullname);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), newUser.toString());
+        Call<ResponseBody> serviceCall = clientApi.DishyService().register(body);
+        serviceCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    try {
+                        String result = response.body().string();
+                        Type type = new TypeToken<ReponseData<User>>() {
+                        }.getType();
+                        ReponseData<User> data = new Gson().fromJson(result, type);
+                        User user = data.getData();
+                        if (user != null) {
+                            callBackData.onSucess(user);
+                        } else {
+                            callBackData.onFail("Không thể đăng ký!");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        callBackData.onFail("Không thể đăng ký!");
+                    }
+
+>>>>>>> e9987c503e38607b70d19ab5ef2f2a750facb7ef
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+<<<<<<< HEAD
                 callBackData.onFail("4");
+=======
+                callBackData.onFail("Không thể đăng ký!");
+>>>>>>> e9987c503e38607b70d19ab5ef2f2a750facb7ef
             }
         });
     }
 }
+
