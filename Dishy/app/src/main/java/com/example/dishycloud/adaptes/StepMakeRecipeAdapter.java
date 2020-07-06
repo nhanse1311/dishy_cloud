@@ -38,13 +38,13 @@ public class StepMakeRecipeAdapter extends RecyclerView.Adapter<StepMakeRecipeAd
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mTxtOrder.setText("Bước " + (position + 1));
-        holder.mTxtDescription.setText(mStepMakes.get(position).getDescrip());
-        if (mStepMakes.get(position).isPrepairStage()){
+        holder.mTxtDescription.setText(mStepMakes.get(position).getDescription());
+        if (mStepMakes.get(position).isRepair()){
             holder.mTxtRepair.setVisibility(View.VISIBLE);
         }else{
             holder.mTxtRepair.setVisibility(View.GONE);
         }
-        mImageStepMakeAdapter = new ImageStepMakeAdapter(mContext,mStepMakes.get(position).getUrlImgeOne(),mStepMakes.get(position).getUrlImgWto());
+        mImageStepMakeAdapter = new ImageStepMakeAdapter(mContext,mStepMakes.get(position).getImage1(),mStepMakes.get(position).getImage2());
         holder.mViewPager.setAdapter(mImageStepMakeAdapter);
         if (mImageStepMakeAdapter.getCount()==1){
             holder.mImgDotTwo.setVisibility(View.GONE);

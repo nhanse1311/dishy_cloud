@@ -28,6 +28,7 @@
 
             <LinearLayout
                 android:layout_marginTop="@dimen/dp10"
+                android:visibility="gone"
                 android:background="@drawable/custom_frame_input"
                 android:layout_marginRight="@dimen/dp20"
                 android:layout_marginLeft="@dimen/dp20"
@@ -107,14 +108,14 @@
                                 android:layout_height="wrap_content">
                                 <CheckBox
                                     android:id="@+id/cb_prepair_stage"
-                                    android:layout_weight="5.7"
+                                    android:layout_weight="5.8"
                                     android:text="Công đoạn chuẩn bị"
                                     android:layout_width="@dimen/dp0"
                                     android:textSize="@dimen/sp13"
                                     android:layout_height="wrap_content"/>
 
                                 <FrameLayout
-                                    android:layout_weight="1.5"
+                                    android:layout_weight="2"
                                     android:layout_height="wrap_content"
                                     android:layout_width="@dimen/dp0">
                                     <ImageView
@@ -122,15 +123,15 @@
                                        android:padding="1.334dp"
                                         android:scaleType="fitXY"
                                         android:src="@drawable/ic_add_picture"
-                                        android:layout_width="@dimen/dp40"
+                                        android:layout_width="@dimen/dp50"
                                         android:layout_height="@dimen/dp40"/>
                                     <ImageView
                                         android:src="@drawable/custom_frame_input"
-                                        android:layout_width="@dimen/dp40"
+                                        android:layout_width="@dimen/dp50"
                                         android:layout_height="@dimen/dp40"/>
                                 </FrameLayout>
                                 <FrameLayout
-                                    android:layout_weight="1.5"
+                                    android:layout_weight="2"
                                     android:layout_height="wrap_content"
                                     android:layout_width="@dimen/dp0">
                                     <ImageView
@@ -138,15 +139,17 @@
                                         android:padding="1.334dp"
                                         android:scaleType="fitXY"
                                         android:src="@drawable/ic_add_picture"
-                                        android:layout_width="@dimen/dp40"
+                                        android:layout_width="@dimen/dp50"
                                         android:layout_height="@dimen/dp40"/>
+
                                     <ImageView
-                                        android:src="@drawable/custom_frame_input"
-                                        android:layout_width="@dimen/dp40"
-                                        android:layout_height="@dimen/dp40"/>
+                                        android:layout_width="@dimen/dp50"
+                                        android:layout_height="@dimen/dp40"
+                                        android:src="@drawable/custom_frame_input" />
                                 </FrameLayout>
                                 <FrameLayout
-                                    android:layout_weight="1.5"
+                                    android:visibility="gone"
+                                    android:layout_weight="2"
                                     android:layout_height="wrap_content"
                                     android:layout_width="@dimen/dp0">
                                     <ImageView

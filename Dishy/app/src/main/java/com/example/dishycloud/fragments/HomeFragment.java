@@ -161,9 +161,9 @@ public class HomeFragment extends Fragment {
         mDishyFollowList.add(new Dishy("Bánh tráng trộn", "https://i.ytimg.com/vi/8lNLepEuR8I/maxresdefault.jpg", "24 phút", 5, "Khó", 100, chef3));
         updateUIRcvDishyFollow(mDishyFollowList);
 
-        mDatabaseHelper = new DatabaseHelper(getContext());
-        String token = mDatabaseHelper.getToken();
-        Toast.makeText(getContext(),token,Toast.LENGTH_LONG).show();
+//        mDatabaseHelper = new DatabaseHelper(getContext());
+//        String token = mDatabaseHelper.getToken();
+//        Toast.makeText(getContext(),token,Toast.LENGTH_LONG).show();
     }
 
 

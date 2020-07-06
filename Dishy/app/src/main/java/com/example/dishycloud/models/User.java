@@ -7,14 +7,18 @@ import java.io.Serializable;
 public class User implements Serializable {
     @SerializedName("roles")
     private String roles;
-    @SerializedName("avarter")
-    private String avarter;
+    @SerializedName("avartar")
+    private String avartar;
     @SerializedName("fullname")
     private String fullname;
     @SerializedName("access_token")
     private String access_token;
     @SerializedName("expires_in")
     private String expires_in;
+    @SerializedName("numberRecipe")
+    private int numberRecipe;
+    @SerializedName("numberFollower")
+    private int numberFollower;
 
     public String getRoles() {
         return roles;
@@ -24,12 +28,12 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
-    public String getAvarter() {
-        return avarter;
+    public String getAvartar() {
+        return avartar;
     }
 
-    public void setAvarter(String avarter) {
-        this.avarter = avarter;
+    public void setAvartar(String avartar) {
+        this.avartar = avartar;
     }
 
     public String getFullname() {
@@ -54,5 +58,21 @@ public class User implements Serializable {
 
     public void setExpires_in(String expires_in) {
         this.expires_in = expires_in;
+    }
+
+    public int getNumberRecipe() {
+        return numberRecipe;
+    }
+
+    public void setNumberRecipe(int numberRecipe) {
+        this.numberRecipe = numberRecipe;
+    }
+
+    public int getNumberFollower() {
+        return numberFollower;
+    }
+
+    public void setNumberFollower(int numberFollower) {
+        this.numberFollower = numberFollower;
     }
 }

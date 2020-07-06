@@ -53,22 +53,13 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/txt_ufm_fullname"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="Ruby"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="@dimen/dp20"
                                 android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="01/01/2019"
-                                android:textColor="@color/colorBlack"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
                         </LinearLayout>
 
                         <View
@@ -97,12 +88,13 @@
                                     android:src="@drawable/ic_favorite" />
 
                                 <TextView
+                                    android:id="@+id/txt_ufm_followerr"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginBottom="@dimen/dp5"
                                     android:gravity="center"
                                     android:textColor="@color/colorBlack"
-                                    android:text="100 người theo dõi" />
+                                    android:text="0 người theo dõi" />
                             </LinearLayout>
 
                             <View
@@ -127,12 +119,13 @@
                                     android:src="@drawable/ic_quantity_recipe" />
 
                                 <TextView
+                                    android:id="@+id/txt_ufm_recipe"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginBottom="@dimen/dp5"
                                     android:gravity="center"
                                     android:textColor="@color/colorBlack"
-                                    android:text="6 công thức" />
+                                    android:text="0 công thức" />
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -144,12 +137,12 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/imgAvatar"
+                        android:id="@+id/imgAvatar_uf"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:background="@null"
                         android:layout_gravity="center"
-                        android:src="@mipmap/ic_ruby" />
+                        />
                 </LinearLayout>
             </FrameLayout>
 
@@ -157,6 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dp15"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <TextView

@@ -12,20 +12,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dishycloud.R;
 import com.example.dishycloud.activities.EditAccountActivity;
+import com.example.dishycloud.activities.HomeActivity;
+import com.example.dishycloud.activities.SignInActivity;
+import com.example.dishycloud.activities.SplashActivity;
 import com.example.dishycloud.adaptes.AlbumAdapter;
 import com.example.dishycloud.adaptes.FollowChefApdater;
 import com.example.dishycloud.adaptes.RecipeConcernAdapter;
 import com.example.dishycloud.models.Chef;
 import com.example.dishycloud.models.ItemsQuickSearch;
+import com.example.dishycloud.models.User;
+import com.example.dishycloud.presenters.GetUserPresenter;
+import com.example.dishycloud.sqlites.DatabaseHelper;
+import com.example.dishycloud.views.GetInfoVIew;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserFragment extends Fragment {
+public class UserFragment extends Fragment implements View.OnClickListener, GetInfoVIew<User> {
     private View mView;
     private RecyclerView mRecycleView, mRecycleViewConcern;
     private FollowChefApdater mFollowAdapter;
@@ -33,8 +43,14 @@ public class UserFragment extends Fragment {
     private RecipeConcernAdapter mRecipeConcernAdapter;
     private List<Chef> items;
     private List<ItemsQuickSearch> quickSearchList;
-    private ImageView mTxtEditAccount;
+    private ImageView mTxtEditAccount, mImgAvatar;
     private Button mBtnLogout;
+    private DatabaseHelper mDatabaseHelper;
+    private GetUserPresenter mGetUserPresenter;
+
+    private TextView mTxtFullname;
+    private TextView mTxtFollower;
+    private TextView mTxtRecipe;
 
     public static UserFragment newInstance() {
         UserFragment fragment = new UserFragment();
@@ -61,7 +77,11 @@ public class UserFragment extends Fragment {
         mRecycleView = mView.findViewById(R.id.rcv_follow);
         mRecycleViewConcern = mView.findViewById(R.id.rcv_concern);
         mTxtEditAccount = mView.findViewById(R.id.txt_update_account);
+        mImgAvatar = mView.findViewById(R.id.imgAvatar_uf);
         mBtnLogout = mView.findViewById(R.id.btn_logout);
+        mTxtFullname = mView.findViewById(R.id.txt_ufm_fullname);
+        mTxtFollower = mView.findViewById(R.id.txt_ufm_followerr);
+        mTxtRecipe = mView.findViewById(R.id.txt_ufm_recipe);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRecycleView.setLayoutManager(linearLayoutManager);
@@ -71,6 +91,10 @@ public class UserFragment extends Fragment {
     }
 
     private void initData() {
+        mDatabaseHelper = new DatabaseHelper(getContext());
+        mGetUserPresenter =  new GetUserPresenter(this);
+        mGetUserPresenter.getUser(mDatabaseHelper.getToken());
+
         if (items == null) {
             items = new ArrayList<Chef>();
         }
@@ -81,19 +105,6 @@ public class UserFragment extends Fragment {
         items.add(chef1);
         items.add(chef3);
         items.add(chef2);
-
-        quickSearchList = new ArrayList<>();
-        quickSearchList.add(new ItemsQuickSearch("Ăn sáng", "https://png.pngtree.com/png-vector/20190130/ourlarge/pngtree-food-elements-hand-drawn-cute-cartoon-breakfast-dessert-omelette-elementhand-drawn-png-image_613496.jpg"));
-        quickSearchList.add(new ItemsQuickSearch("Món chính", "https://png.pngtree.com/png-clipart/20190115/ourlarge/pngtree-winter-food-free-food-special-food-creative-food-png-image_359446.jpg"));
-        quickSearchList.add(new ItemsQuickSearch("Ăn vặt", "https://png.pngtree.com/png-clipart/20190117/ourlarge/pngtree-delicious-snacks-beautiful-snack-hand-painted-snacks-cartoon-snack-png-image_412624.jpg"));
-        quickSearchList.add(new ItemsQuickSearch("Bánh", "https://png.pngtree.com/png-vector/20190130/ourlarge/pngtree-food-elements-hand-drawn-cute-cartoon-gourmet-donuts-elementhand-drawn-foodcartoon-png-image_614532.jpg"));
-        quickSearchList.add(new ItemsQuickSearch("Ăn chay", "https://png.pngtree.com/png-vector/20190116/ourlarge/pngtree-vegetable-salad-food-vegetables-vegetable-salad-food-pattern-png-image_388734.jpg"));
-        quickSearchList.add(new ItemsQuickSearch("Healthy", "https://png.pngtree.com/png-vector/20190130/ourlarge/pngtree-mbe-style-cartoon-cute-vegetable-carrot-vegetablescute-vegetablesmbe-vegetablescarrot-png-image_590422.jpg"));
-        quickSearchList.add(new ItemsQuickSearch("Thức uống", "https://png.pngtree.com/png-clipart/20190115/ourlarge/pngtree-food-coffee-coffee-frappuccino-png-image_369400.jpg"));
-        quickSearchList.add(new ItemsQuickSearch("Snacks", "https://png.pngtree.com/png-clipart/20190117/ourlarge/pngtree-delicious-popcorn-nutritional-popcorn-snack-popcorn-hand-painted-popcorn-png-image_415111.jpg"));
-        quickSearchList.add(new ItemsQuickSearch("Lẩu", "https://png.pngtree.com/element_our/png_detail/20181127/404-lang-png_248262.jpg"));
-        quickSearchList.add(new ItemsQuickSearch("Salad", "https://png.pngtree.com/element_origin_min_pic/16/08/03/1457a194373fea7.jpg"));
-        updateRcvConcern(quickSearchList);
         updateRcv();
 
         mTxtEditAccount.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +114,8 @@ public class UserFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        mBtnLogout.setOnClickListener(this);
     }
 
     private void updateRcv() {
@@ -114,17 +127,31 @@ public class UserFragment extends Fragment {
         }
     }
 
-    private void updateRcvConcern(List<ItemsQuickSearch> quickSearchList){
-        if (mRecipeConcernAdapter == null) {
-            mRecipeConcernAdapter = new RecipeConcernAdapter(getContext(), quickSearchList);
-            mRecycleViewConcern.setAdapter(mRecipeConcernAdapter);
-        } else {
-            mRecipeConcernAdapter.notifyDataSetChanged();
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_logout:
+                mDatabaseHelper.deleteToken();
+                Intent intent =  new Intent(getContext(), SignInActivity.class);
+                getActivity().startActivity(intent);
+                break;
         }
     }
 
-    public void clickToLogout(View view) {
-        System.exit(0);
+    @Override
+    public void onSuccess(User user) {
+        mTxtFullname.setText(user.getFullname());
+        mTxtFollower.setText("Có "+user.getNumberFollower()+" theo dõi");
+        mTxtRecipe.setText("Có "+user.getNumberRecipe()+" công thức");
+        Picasso.Builder builder = new Picasso.Builder(getContext());
+        builder.build().load(user.getAvartar())
+                .error(R.drawable.ic_launcher_foreground)
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .into(mImgAvatar);
     }
 
+    @Override
+    public void onFail(String message) {
+        Toast.makeText(getContext(),message,Toast.LENGTH_LONG).show();
+    }
 }

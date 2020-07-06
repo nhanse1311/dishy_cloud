@@ -2,6 +2,7 @@ package com.example.dishycloud.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -52,6 +54,8 @@ public class EditThreeFragment extends Fragment implements View.OnClickListener 
     private List<StepMake> mStepMakes = new ArrayList<>();
     private StepMakeAdapter mStepMakeAdapter;
     private RecyclerView mRcvStepMake;
+    private Uri mUriImage1, mUriImage2;
+    private String mEncodeImg1 = "", mEncodeImg2 = "";
 
     public static EditThreeFragment newInstance() {
         EditThreeFragment fragment = new EditThreeFragment();
@@ -82,42 +86,19 @@ public class EditThreeFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == TAKE_PIC_1 && resultCode == Activity.RESULT_OK) {
-            mUriAvatar = data.getData();
-            try {
-                mBmImgDialog1 = null;
-                mBmImg1 = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), mUriAvatar);
-                mImgPicOne.setImageBitmap(mBmImg1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (requestCode == TAKE_PIC_2 && resultCode == Activity.RESULT_OK) {
-            mUriAvatar = data.getData();
-            try {
-                mBmImgDialog2 = null;
-                mBmImg2 = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), mUriAvatar);
-                mImgPicWto.setImageBitmap(mBmImg2);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (requestCode == TAKE_PIC_1_DIALOG && resultCode == Activity.RESULT_OK) {
-            mUriAvatar = data.getData();
-            try {
-                mBmImg1 = null;
-                mBmImgDialog1 = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), mUriAvatar);
-                mImgDialog1.setImageBitmap(mBmImgDialog1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (requestCode == TAKE_PIC_1_DIALOG && resultCode == Activity.RESULT_OK) {
+            mUriImage1 = data.getData();
+            mImgDialog1.setImageURI(mUriImage1);
+            ContentResolver cr = getActivity().getContentResolver();
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+            mEncodeImg1 = System.currentTimeMillis() + "." + mimeTypeMap.getExtensionFromMimeType(cr.getType(mUriImage1));
+
         } else if (requestCode == TAKE_PIC_2_DIALOG && resultCode == Activity.RESULT_OK) {
-            mUriAvatar = data.getData();
-            try {
-                mBmImg2 = null;
-                mBmImgDialog2 = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), mUriAvatar);
-                mImgDialog2.setImageBitmap(mBmImgDialog2);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            mUriImage2 = data.getData();
+            mImgDialog2.setImageURI(mUriImage2);
+            ContentResolver cr = getActivity().getContentResolver();
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+            mEncodeImg2 = System.currentTimeMillis() + "." + mimeTypeMap.getExtensionFromMimeType(cr.getType(mUriImage2));
         }
     }
 
@@ -151,14 +132,14 @@ public class EditThreeFragment extends Fragment implements View.OnClickListener 
             }
         }
 
-        mEdtDescripStep.setText(dishy.getMakes().get(0).getDescrip());
+        mEdtDescripStep.setText(dishy.getMakes().get(0).getDescription());
         mEdtDescripStep.setEnabled(false);
         mImgPicOne.setEnabled(false);
         mImgPicWto.setEnabled(false);
         Picasso.Builder builder = new Picasso.Builder(getContext());
-        builder.build().load(dishy.getMakes().get(0).getUrlImgeOne()).into(mImgPicOne);
-        builder.build().load(dishy.getMakes().get(0).getUrlImgWto()).into(mImgPicWto);
-        mCbCheckPrepairStage.setChecked(dishy.getMakes().get(0).isPrepairStage());
+        builder.build().load(dishy.getMakes().get(0).getImage1()).into(mImgPicOne);
+        builder.build().load(dishy.getMakes().get(0).getImage2()).into(mImgPicWto);
+        mCbCheckPrepairStage.setChecked(dishy.getMakes().get(0).isRepair());
         mCbCheckPrepairStage.setEnabled(false);
         updateUIRCV(mStepMakes);
     }
@@ -223,7 +204,7 @@ public class EditThreeFragment extends Fragment implements View.OnClickListener 
             public void onClick(View view) {
                 String desc = edtDes.getText().toString().trim();
                 boolean check = cbPrepair.isChecked();
-                mStepMakes.add(new StepMake(desc, check, mBmImgDialog1, mBmImgDialog2));
+                mStepMakes.add(new StepMake(desc, check, mUriImage1, mUriImage2));
                 dialog.dismiss();
                 updateUIRCV(mStepMakes);
             }
@@ -240,10 +221,10 @@ public class EditThreeFragment extends Fragment implements View.OnClickListener 
         mImgDialog1 = dialog.findViewById(R.id.img_step_make_1_dialog);
         mImgDialog2 = dialog.findViewById(R.id.img_step_make_2_dialog);
 
-        edtDes.setText(stepMake.getDescrip());
-        cbPrepair.setChecked(stepMake.isPrepairStage());
-        mImgDialog1.setImageBitmap(stepMake.getImageOne());
-        mImgDialog2.setImageBitmap(stepMake.getImageTwo());
+        edtDes.setText(stepMake.getDescription());
+        cbPrepair.setChecked(stepMake.isRepair());
+        mImgDialog1.setImageURI(stepMake.getUrlImgeOne());
+        mImgDialog2.setImageURI(stepMake.getUrlImgWto());
 
         mImgDialog1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,17 +244,17 @@ public class EditThreeFragment extends Fragment implements View.OnClickListener 
             public void onClick(View view) {
                 String desc = edtDes.getText().toString().trim();
                 boolean check = cbPrepair.isChecked();
-                mStepMake.setDescrip(desc);
-                mStepMake.setPrepairStage(check);
+                mStepMake.setDescription(desc);
+                mStepMake.setRepair(check);
                 if (mBmImgDialog1 != null) {
-                    mStepMake.setImageOne(mBmImgDialog1);
+                    mStepMake.setUrlImgeOne(mUriImage1);
                 } else {
-                    mStepMake.setImageOne(mBmImg1);
+                    mStepMake.setUrlImgeOne(mUriImage1);
                 }
                 if (mBmImgDialog2 != null) {
-                    mStepMake.setImageTwo(mBmImgDialog2);
+                    mStepMake.setUrlImgWto(mUriImage2);
                 } else {
-                    mStepMake.setImageTwo(mBmImg2);
+                    mStepMake.setUrlImgWto(mUriImage2);
                 }
                 updateStepMakeOne(mStepMake);
                 dialog.dismiss();
@@ -293,10 +274,10 @@ public class EditThreeFragment extends Fragment implements View.OnClickListener 
         mImgDialog1 = dialog.findViewById(R.id.img_step_make_1_dialog);
         mImgDialog2 = dialog.findViewById(R.id.img_step_make_2_dialog);
 
-        edtDes.setText(stepMake.getDescrip());
-        cbPrepair.setChecked(stepMake.isPrepairStage());
-        mImgDialog1.setImageBitmap(stepMake.getImageOne());
-        mImgDialog2.setImageBitmap(stepMake.getImageTwo());
+        edtDes.setText(stepMake.getDescription());
+        cbPrepair.setChecked(stepMake.isRepair());
+        mImgDialog1.setImageURI(stepMake.getUrlImgeOne());
+        mImgDialog2.setImageURI(stepMake.getUrlImgWto());
 
         mImgDialog1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -316,10 +297,10 @@ public class EditThreeFragment extends Fragment implements View.OnClickListener 
             public void onClick(View view) {
                 String desc = edtDes.getText().toString().trim();
                 boolean check = cbPrepair.isChecked();
-                mStepMakes.get(position).setDescrip(desc);
-                mStepMakes.get(position).setPrepairStage(check);
-                mStepMakes.get(position).setImageOne(mBmImgDialog1);
-                mStepMakes.get(position).setImageOne(mBmImgDialog2);
+                mStepMakes.get(position).setDescription(desc);
+                mStepMakes.get(position).setRepair(check);
+                mStepMakes.get(position).setUrlImgeOne(mUriImage1);
+                mStepMakes.get(position).setUrlImgWto(mUriImage2);
                 updateUIRCV(mStepMakes);
                 dialog.dismiss();
             }
@@ -327,14 +308,14 @@ public class EditThreeFragment extends Fragment implements View.OnClickListener 
     }
 
     private void updateStepMakeOne(StepMake mStepMake) {
-        mEdtDescripStep.setText(mStepMake.getDescrip());
-        mCbCheckPrepairStage.setChecked(mStepMake.isPrepairStage());
-        mImgPicOne.setImageBitmap(mStepMake.getImageOne());
-        mImgPicWto.setImageBitmap(mStepMake.getImageTwo());
-        if (mStepMake.getImageOne() == null) {
+        mEdtDescripStep.setText(mStepMake.getDescription());
+        mCbCheckPrepairStage.setChecked(mStepMake.isRepair());
+        mImgPicOne.setImageURI(mStepMake.getUrlImgeOne());
+        mImgPicWto.setImageURI(mStepMake.getUrlImgWto());
+        if (mStepMake.getImage1() == null) {
             mImgPicOne.setImageResource(R.drawable.ic_add_picture);
         }
-        if (mStepMake.getImageTwo() == null) {
+        if (mStepMake.getImage2() == null) {
             mImgPicWto.setImageResource(R.drawable.ic_add_picture);
         }
     }
@@ -373,7 +354,7 @@ public class EditThreeFragment extends Fragment implements View.OnClickListener 
             case R.id.img_edit_make_step_edit:
                 String desc = mEdtDescripStep.getText().toString().trim();
                 mCheckPrepairStage = mCbCheckPrepairStage.isChecked();
-                mStepMake = new StepMake(desc, mCheckPrepairStage, mBmImg1 != null ? mBmImg1 : mBmImgDialog1, mBmImg2 != null ? mBmImg2 : mBmImgDialog2);
+                mStepMake = new StepMake(desc, mCheckPrepairStage, mUriImage1,mUriImage2);
                 showDialogToEditMakeStepOne(mStepMake);
                 break;
             case R.id.btn_done_edit:

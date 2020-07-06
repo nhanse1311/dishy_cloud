@@ -14,6 +14,8 @@ import com.example.dishycloud.R;
 import com.example.dishycloud.adaptes.FragementStepCreateRecipeAdapter;
 import com.example.dishycloud.fragments.CreateRecipeStepOneFragment;
 import com.example.dishycloud.fragments.CreateRecipeStepTwoFragment;
+import com.example.dishycloud.models.Recipe;
+import com.example.dishycloud.utils.BaseUtils;
 
 public class CreateRecipeActivity extends AppCompatActivity {
     private Toolbar mToolbar;
@@ -44,10 +46,12 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 mViewPager.setCurrentItem(nextPage);
             }
         };
+
         CreateRecipeStepTwoFragment.mOnStepTwoClickListener =  new CreateRecipeStepTwoFragment.OnStepTwoClickListener() {
             @Override
             public void onClick(int pager) {
                 mViewPager.setCurrentItem(pager);
+
             }
         };
     }

@@ -3,6 +3,7 @@ package com.example.dishycloud.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -14,24 +15,33 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.dishycloud.R;
 import com.example.dishycloud.adaptes.StepMakeAdapter;
 import com.example.dishycloud.models.StepMake;
+import com.example.dishycloud.presenters.CreateRecipePresenter;
+import com.example.dishycloud.presenters.GetUserPresenter;
+import com.example.dishycloud.sqlites.DatabaseHelper;
+import com.example.dishycloud.utils.BaseUtils;
+import com.example.dishycloud.views.CreateRecipeView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class CreateRecipeStepThreeFragment extends Fragment implements View.OnClickListener {
+public class CreateRecipeStepThreeFragment extends Fragment implements View.OnClickListener, CreateRecipeView {
     private static int TAKE_PIC_1 = 9801;
     private static int TAKE_PIC_2 = 9802;
     private static int TAKE_PIC_1_DIALOG = 9811;
@@ -44,12 +54,18 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
     private Boolean mCheckPrepairStage;
     private ImageView mImgDialog1, mImgDialog2;
     private ImageView mImgPicOne, mImgPicWto, mImgAddMakeStep, mImgEditStep1;
-    private Bitmap mBmImg1, mBmImg2, mBmImgDialog1, mBmImgDialog2;
-    private Uri mUriAvatar;
+    private Bitmap mBmImgDialog1, mBmImgDialog2;
+    private String mEncodeImg1 = "", mEncodeImg2 = "";
+    private Uri mUriImage1, mUriImage2;
     private StepMake mStepMake;
     private List<StepMake> mStepMakes = new ArrayList<>();
     private StepMakeAdapter mStepMakeAdapter;
     private RecyclerView mRcvStepMake;
+    private Dialog mDialogLoading;
+
+    private CreateRecipePresenter mCreateRecipePresenter;
+    private DatabaseHelper mDatabaseHelper;
+
 
     public static CreateRecipeStepThreeFragment newInstance() {
         CreateRecipeStepThreeFragment fragment = new CreateRecipeStepThreeFragment();
@@ -81,42 +97,19 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == TAKE_PIC_1 && resultCode == Activity.RESULT_OK) {
-            mUriAvatar = data.getData();
-            try {
-                mBmImgDialog1 = null;
-                mBmImg1 = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), mUriAvatar);
-                mImgPicOne.setImageBitmap(mBmImg1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (requestCode == TAKE_PIC_2 && resultCode == Activity.RESULT_OK) {
-            mUriAvatar = data.getData();
-            try {
-                mBmImgDialog2 = null;
-                mBmImg2 = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), mUriAvatar);
-                mImgPicWto.setImageBitmap(mBmImg2);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (requestCode == TAKE_PIC_1_DIALOG && resultCode == Activity.RESULT_OK) {
-            mUriAvatar = data.getData();
-            try {
-                mBmImg1 = null;
-                mBmImgDialog1 = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), mUriAvatar);
-                mImgDialog1.setImageBitmap(mBmImgDialog1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (requestCode == TAKE_PIC_1_DIALOG && resultCode == Activity.RESULT_OK) {
+            mUriImage1 = data.getData();
+            mImgDialog1.setImageURI(mUriImage1);
+            ContentResolver cr = getActivity().getContentResolver();
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+            mEncodeImg1 = System.currentTimeMillis() + "." + mimeTypeMap.getExtensionFromMimeType(cr.getType(mUriImage1));
+
         } else if (requestCode == TAKE_PIC_2_DIALOG && resultCode == Activity.RESULT_OK) {
-            mUriAvatar = data.getData();
-            try {
-                mBmImg2 = null;
-                mBmImgDialog2 = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), mUriAvatar);
-                mImgDialog2.setImageBitmap(mBmImgDialog2);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            mUriImage2 = data.getData();
+            mImgDialog2.setImageURI(mUriImage2);
+            ContentResolver cr = getActivity().getContentResolver();
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+            mEncodeImg2 = System.currentTimeMillis() + "." + mimeTypeMap.getExtensionFromMimeType(cr.getType(mUriImage2));
         }
     }
 
@@ -131,9 +124,15 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
         mRcvStepMake = mView.findViewById(R.id.rcv_item_step_make);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRcvStepMake.setLayoutManager(manager);
+
+        mDialogLoading = new Dialog(getContext(), R.style.Theme_Dialog);
+        mDialogLoading.setContentView(R.layout.dialog_loading);
     }
 
     private void initData() {
+        mDatabaseHelper = new DatabaseHelper(getContext());
+        mCreateRecipePresenter = new CreateRecipePresenter(this);
+
         mImgPicOne.setOnClickListener(this);
         mImgPicWto.setOnClickListener(this);
         mImgAddMakeStep.setOnClickListener(this);
@@ -205,7 +204,7 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
             public void onClick(View view) {
                 String desc = edtDes.getText().toString().trim();
                 boolean check = cbPrepair.isChecked();
-                mStepMakes.add(new StepMake(desc, check, mBmImgDialog1, mBmImgDialog2));
+                mStepMakes.add(new StepMake(desc, check, mEncodeImg1, mEncodeImg2, mUriImage1, mUriImage2));
                 dialog.dismiss();
                 updateUIRCV();
             }
@@ -222,10 +221,10 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
         mImgDialog1 = dialog.findViewById(R.id.img_step_make_1_dialog);
         mImgDialog2 = dialog.findViewById(R.id.img_step_make_2_dialog);
 
-        edtDes.setText(stepMake.getDescrip());
-        cbPrepair.setChecked(stepMake.isPrepairStage());
-        mImgDialog1.setImageBitmap(stepMake.getImageOne());
-        mImgDialog2.setImageBitmap(stepMake.getImageTwo());
+        edtDes.setText(stepMake.getDescription());
+        cbPrepair.setChecked(stepMake.isRepair());
+        mImgDialog1.setImageURI(stepMake.getUrlImgeOne());
+        mImgDialog2.setImageURI(stepMake.getUrlImgWto());
 
         mImgDialog1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,17 +244,19 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
             public void onClick(View view) {
                 String desc = edtDes.getText().toString().trim();
                 boolean check = cbPrepair.isChecked();
-                mStepMake.setDescrip(desc);
-                mStepMake.setPrepairStage(check);
+                mStepMake.setDescription(desc);
+                mStepMake.setRepair(check);
                 if (mBmImgDialog1 != null) {
-                    mStepMake.setImageOne(mBmImgDialog1);
+                    mStepMake.setUrlImgeOne(mUriImage1);
+                    mStepMake.setImage1(mEncodeImg1);
                 } else {
-                    mStepMake.setImageOne(mBmImg1);
+                    mStepMake.setUrlImgeOne(mUriImage1);
                 }
                 if (mBmImgDialog2 != null) {
-                    mStepMake.setImageTwo(mBmImgDialog2);
+                    mStepMake.setUrlImgWto(mUriImage2);
+                    mStepMake.setImage2(mEncodeImg2);
                 } else {
-                    mStepMake.setImageTwo(mBmImg2);
+                    mStepMake.setUrlImgWto(mUriImage2);
                 }
                 updateStepMakeOne(mStepMake);
                 dialog.dismiss();
@@ -275,10 +276,10 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
         mImgDialog1 = dialog.findViewById(R.id.img_step_make_1_dialog);
         mImgDialog2 = dialog.findViewById(R.id.img_step_make_2_dialog);
 
-        edtDes.setText(stepMake.getDescrip());
-        cbPrepair.setChecked(stepMake.isPrepairStage());
-        mImgDialog1.setImageBitmap(stepMake.getImageOne());
-        mImgDialog2.setImageBitmap(stepMake.getImageTwo());
+        edtDes.setText(stepMake.getDescription());
+        cbPrepair.setChecked(stepMake.isRepair());
+        mImgDialog1.setImageURI(stepMake.getUrlImgeOne());
+        mImgDialog2.setImageURI(stepMake.getUrlImgWto());
 
         mImgDialog1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -298,10 +299,10 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
             public void onClick(View view) {
                 String desc = edtDes.getText().toString().trim();
                 boolean check = cbPrepair.isChecked();
-                mStepMakes.get(position).setDescrip(desc);
-                mStepMakes.get(position).setPrepairStage(check);
-                mStepMakes.get(position).setImageOne(mBmImgDialog1);
-                mStepMakes.get(position).setImageOne(mBmImgDialog2);
+                mStepMakes.get(position).setDescription(desc);
+                mStepMakes.get(position).setRepair(check);
+                mStepMakes.get(position).setUrlImgeOne(mUriImage1);
+                mStepMakes.get(position).setUrlImgWto(mUriImage2);
                 updateUIRCV();
                 dialog.dismiss();
             }
@@ -309,14 +310,14 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
     }
 
     private void updateStepMakeOne(StepMake mStepMake) {
-        mEdtDescripStep.setText(mStepMake.getDescrip());
-        mCbCheckPrepairStage.setChecked(mStepMake.isPrepairStage());
-        mImgPicOne.setImageBitmap(mStepMake.getImageOne());
-        mImgPicWto.setImageBitmap(mStepMake.getImageTwo());
-        if (mStepMake.getImageOne() == null) {
+        mEdtDescripStep.setText(mStepMake.getDescription());
+        mCbCheckPrepairStage.setChecked(mStepMake.isRepair());
+        mImgPicOne.setImageURI(mStepMake.getUrlImgeOne());
+        mImgPicWto.setImageURI(mStepMake.getUrlImgWto());
+        if (mStepMake.getUrlImgeOne() == null) {
             mImgPicOne.setImageResource(R.drawable.ic_add_picture);
         }
-        if (mStepMake.getImageTwo() == null) {
+        if (mStepMake.getUrlImgWto() == null) {
             mImgPicWto.setImageResource(R.drawable.ic_add_picture);
         }
     }
@@ -355,12 +356,27 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
             case R.id.img_edit_make_step:
                 String desc = mEdtDescripStep.getText().toString().trim();
                 mCheckPrepairStage = mCbCheckPrepairStage.isChecked();
-                mStepMake = new StepMake(desc, mCheckPrepairStage, mBmImg1 != null ? mBmImg1 : mBmImgDialog1, mBmImg2 != null ? mBmImg2 : mBmImgDialog2);
+                mStepMake = new StepMake(desc, mCheckPrepairStage, mUriImage1, mUriImage2);
                 showDialogToEditMakeStepOne(mStepMake);
                 break;
             case R.id.btn_done:
-                showDialogSuccess();
+                BaseUtils.recipe.setSteps(mStepMakes);
+                String token = mDatabaseHelper.getToken();
+                mDialogLoading.show();
+                mCreateRecipePresenter.createRecipe(mDatabaseHelper.getToken());
                 break;
         }
+    }
+
+    @Override
+    public void onSuccess() {
+        showDialogSuccess();
+        mDialogLoading.dismiss();
+    }
+
+    @Override
+    public void onFail(String message) {
+        mDialogLoading.dismiss();
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 }

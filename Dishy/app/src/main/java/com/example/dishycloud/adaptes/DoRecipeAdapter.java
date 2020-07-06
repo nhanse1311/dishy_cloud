@@ -37,8 +37,8 @@ public class DoRecipeAdapter extends PagerAdapter {
         mTxtPrepair = view.findViewById(R.id.txt_repair_do);
         mTxtDesc = view.findViewById(R.id.txt_make_step_des_rcv_do);
 
-        mTxtDesc.setText(mStepMakes.get(position).getDescrip());
-        if (mStepMakes.get(position).isPrepairStage()) {
+        mTxtDesc.setText(mStepMakes.get(position).getDescription());
+        if (mStepMakes.get(position).isRepair()) {
             mTxtPrepair.setVisibility(View.VISIBLE);
         } else {
             mTxtPrepair.setVisibility(View.GONE);
@@ -47,16 +47,16 @@ public class DoRecipeAdapter extends PagerAdapter {
         final Picasso.Builder builder = new Picasso.Builder(mContext);
 
         builder.build()
-                .load(mStepMakes.get(position).getUrlImgeOne())
+                .load(mStepMakes.get(position).getImage1())
                 .error(R.mipmap.logo).placeholder(R.mipmap.logo).into(mImgMain);
 
         builder.build()
-                .load(mStepMakes.get(position).getUrlImgeOne())
+                .load(mStepMakes.get(position).getImage1())
                 .error(R.mipmap.logo).placeholder(R.mipmap.logo).into(mImgDotOne);
 
 
         builder.build()
-                .load(mStepMakes.get(position).getUrlImgWto())
+                .load(mStepMakes.get(position).getImage2())
                 .error(R.mipmap.logo).placeholder(R.mipmap.logo).into(mImgDotWto);
 
         container.addView(view);
@@ -65,7 +65,7 @@ public class DoRecipeAdapter extends PagerAdapter {
            @Override
            public void onClick(View view) {
                builder.build()
-                       .load(mStepMakes.get(position).getUrlImgeOne())
+                       .load(mStepMakes.get(position).getImage1())
                        .error(R.mipmap.logo).placeholder(R.mipmap.logo).into(mImgMain);
                notifyDataSetChanged();
            }
@@ -75,7 +75,7 @@ public class DoRecipeAdapter extends PagerAdapter {
            @Override
            public void onClick(View view) {
                builder.build()
-                       .load(mStepMakes.get(position).getUrlImgWto())
+                       .load(mStepMakes.get(position).getImage2())
                        .error(R.mipmap.logo).placeholder(R.mipmap.logo).into(mImgMain);
                notifyDataSetChanged();
            }

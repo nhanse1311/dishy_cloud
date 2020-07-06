@@ -92,6 +92,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
+                        android:id="@+id/edt_name_recipe_cr_one"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/custom_frame_input"
@@ -117,6 +118,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
+                        android:id="@+id/edt_description_cr_one"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp130"
                         android:layout_marginTop="@dimen/dp10"
@@ -171,6 +173,7 @@
                             android:textStyle="bold" />
 
                         <EditText
+                            android:id="@+id/edt_number_people_cr_one"
                             android:layout_width="@dimen/dp0"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dp10"
@@ -225,6 +228,7 @@
                             android:textSize="@dimen/sp20"
                             android:textStyle="bold" />
                         <EditText
+                            android:id="@+id/edt_time_cooking_cr_one"
                             android:layout_width="@dimen/dp0"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/dp10"

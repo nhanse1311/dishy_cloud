@@ -45,20 +45,21 @@ public class StepMakeAdapter extends RecyclerView.Adapter<StepMakeAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.mEdtDesc.setText(mStepMakes.get(position).getDescrip());
-        holder.mCbPrepair.setChecked(mStepMakes.get(position).isPrepairStage());
-        holder.mImgOne.setImageBitmap(mStepMakes.get(position).getImageOne());
-        holder.mImgTwo.setImageBitmap(mStepMakes.get(position).getImageTwo());
-        holder.mtxtOrder.setText(String.valueOf(position+2));
+        holder.mEdtDesc.setText(mStepMakes.get(position).getDescription());
+        holder.mCbPrepair.setChecked(mStepMakes.get(position).isRepair());
+        holder.mImgOne.setImageURI(mStepMakes.get(position).getUrlImgeOne());
+        holder.mImgTwo.setImageURI(mStepMakes.get(position).getUrlImgWto());
+        holder.mtxtOrder.setText(String.valueOf(position + 1));
         holder.mImgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnStepMakeClickListener.onClick(mStepMakes.get(position),position);
+                mOnStepMakeClickListener.onClick(mStepMakes.get(position), position);
             }
         });
-        if (mStepMakes.get(position).getImageOne()==null){
+        if (mStepMakes.get(position).getUrlImgeOne() == null) {
             holder.mImgOne.setImageResource(R.drawable.ic_add_picture);
-        }if (mStepMakes.get(position).getImageTwo()==null){
+        }
+        if (mStepMakes.get(position).getUrlImgWto() == null) {
             holder.mImgTwo.setImageResource(R.drawable.ic_add_picture);
         }
         holder.mImgOne.setEnabled(false);

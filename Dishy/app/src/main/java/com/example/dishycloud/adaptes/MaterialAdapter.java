@@ -48,7 +48,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.ViewHo
         holder.mEdtName.setText(mMaterials.get(position).getName());
         holder.mEdtQuality.setText(String.valueOf(mMaterials.get(position).getQuality()));
         holder.mTxtUnit.setText(mMaterials.get(position).getUnit());
-        holder.mTxtOrder.setText(String.valueOf(position + 2));
+        holder.mTxtOrder.setText(String.valueOf(position + 1));
         holder.mLLUnit.setEnabled(false);
         holder.mImgEdit.setOnClickListener(new View.OnClickListener() {
             @Override

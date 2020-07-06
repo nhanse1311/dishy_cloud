@@ -69,9 +69,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return database.update(TABLE_USER,values,TOKEN + "=?",new String[]{String.valueOf(user.getAccess_token())});
     }
 
-    public void deleteNote(User note){
+    public void deleteToken(){
         SQLiteDatabase database = this.getWritableDatabase();
-        database.delete(TABLE_USER,TOKEN+ "=?",new String[]{String.valueOf(note.getAccess_token())});
+        database.execSQL("DELETE FROM "+TABLE_USER);
         database.close();
     }
 }

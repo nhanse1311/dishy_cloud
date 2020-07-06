@@ -1,16 +1,19 @@
 package com.example.dishycloud.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//import com.aseem.versatileprogressbar.ProgBar;
 import com.example.dishycloud.R;
 import com.example.dishycloud.presenters.LoginPresenter;
 import com.example.dishycloud.views.LoginView;
@@ -21,6 +24,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private Button btn_SignIn;
     private LoginPresenter mLoginPresenter;
     private TextView btn_SignUp;
+    private Dialog mDialogLoading ;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         mTxtPassword = findViewById(R.id.txt_password_login);
         btn_SignIn = findViewById(R.id.btn_sign_in);
         btn_SignUp = findViewById(R.id.btn_sign_up_login);
+        mDialogLoading = new Dialog(this, R.style.Theme_Dialog);
+        mDialogLoading.setContentView(R.layout.dialog_loading);
     }
 
     private void initData() {
@@ -49,17 +55,20 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         mLoginPresenter.onLogin(username,password);
     }
 
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_sign_in:
                 login();
+                mDialogLoading.show();
                 break;
         }
     }
 
     @Override
     public void onLoginSuccess() {
+        mDialogLoading.dismiss();
         Intent homeIntent = new Intent(SignInActivity.this, HomeActivity.class);
         this.startActivity(homeIntent);
         this.finish();

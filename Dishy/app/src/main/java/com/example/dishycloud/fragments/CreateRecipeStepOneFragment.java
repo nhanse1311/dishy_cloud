@@ -2,8 +2,10 @@ package com.example.dishycloud.fragments;
 
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,11 +14,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import android.widget.TextView;
@@ -24,7 +29,10 @@ import com.example.dishycloud.R;
 import com.example.dishycloud.bottomSheets.BottomSheetChooseOption;
 import com.example.dishycloud.bottomSheets.CallBackOption;
 import com.example.dishycloud.models.ChooseOptionBottomSheet;
+import com.example.dishycloud.models.Recipe;
+import com.example.dishycloud.utils.BaseUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +47,14 @@ public class CreateRecipeStepOneFragment extends Fragment implements View.OnClic
     private Button mBtnNextStep;
     private List<ChooseOptionBottomSheet> mLevelRecipes;
     public static OnNextStepListener mOnNextStepListener;
+    private EditText mEdtRecipeName;
+    private EditText mEdtDecription;
+    private EditText mEdtNumberPeople;
+    private EditText mEdtTimeCook;
 
+    private String name, description, image;
+    private int timeCook, numberPeople;
+    private int levelRecipe = 1;
 
     //interface to click nextStep
     public interface OnNextStepListener {
@@ -73,15 +88,12 @@ public class CreateRecipeStepOneFragment extends Fragment implements View.OnClic
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
 
             mUriAvatar = data.getData();
+            mImgAvatar.setImageURI(mUriAvatar);
+            mImgAvatar.setScaleType(ImageView.ScaleType.FIT_XY);
+            ContentResolver cr = getActivity().getContentResolver();
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+            image = System.currentTimeMillis()+"."+mimeTypeMap.getExtensionFromMimeType(cr.getType(mUriAvatar));
 
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), mUriAvatar);
-                // Log.d(TAG, String.valueOf(bitmap));
-                mImgAvatar.setImageBitmap(bitmap);
-                mImgAvatar.setScaleType(ImageView.ScaleType.FIT_XY);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -89,6 +101,10 @@ public class CreateRecipeStepOneFragment extends Fragment implements View.OnClic
         mImgAvatar = mView.findViewById(R.id.img_avatar_recipe);
         mBtnNextStep = mView.findViewById(R.id.btn_next_step);
         mTxtLevelRecipe = mView.findViewById(R.id.txt_level_repice);
+        mEdtRecipeName = mView.findViewById(R.id.edt_name_recipe_cr_one);
+        mEdtDecription = mView.findViewById(R.id.edt_description_cr_one);
+        mEdtNumberPeople = mView.findViewById(R.id.edt_number_people_cr_one);
+        mEdtTimeCook = mView.findViewById(R.id.edt_time_cooking_cr_one);
     }
 
     private void initData() {
@@ -108,6 +124,7 @@ public class CreateRecipeStepOneFragment extends Fragment implements View.OnClic
             @Override
             public void chooseOption(ChooseOptionBottomSheet method, int position) {
                 mTxtLevelRecipe.setText(method.getName());
+                levelRecipe = method.getId();
             }
         });
     }
@@ -130,6 +147,11 @@ public class CreateRecipeStepOneFragment extends Fragment implements View.OnClic
                 pickFromGallery();
                 break;
             case R.id.btn_next_step:
+                name = mEdtRecipeName.getText().toString().trim();
+                description = mEdtDecription.getText().toString().trim();
+                timeCook = Integer.parseInt(mEdtTimeCook.getText().toString().trim());
+                numberPeople = Integer.parseInt(mEdtNumberPeople.getText().toString().trim());
+                BaseUtils.recipe = new Recipe(name, description, image, timeCook, levelRecipe, numberPeople);
                 mOnNextStepListener.onNextStepWto(1);
                 break;
             case R.id.txt_level_repice:

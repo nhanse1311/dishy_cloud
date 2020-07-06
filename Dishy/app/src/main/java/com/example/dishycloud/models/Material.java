@@ -1,15 +1,20 @@
 package com.example.dishycloud.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class Material implements Serializable {
+    @SerializedName("name")
     private String name;
-    private double quality;
+    @SerializedName("quantity")
+    private double quantity;
+    @SerializedName("unit")
     private String unit;
 
     public Material(String name, double quality, String unit) {
         this.name = name;
-        this.quality = quality;
+        this.quantity = quality;
         this.unit = unit;
     }
 
@@ -23,11 +28,11 @@ public class Material implements Serializable {
     }
 
     public double getQuality() {
-        return quality;
+        return quantity;
     }
 
     public void setQuality(double quality) {
-        this.quality = quality;
+        this.quantity = quality;
     }
 
     public String getUnit() {

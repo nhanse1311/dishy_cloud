@@ -2,8 +2,10 @@ package com.example.dishycloud.repositories;
 
 import android.content.Context;
 
+import com.example.dishycloud.models.Recipe;
 import com.example.dishycloud.models.ReponseData;
 import com.example.dishycloud.models.User;
+import com.example.dishycloud.utils.BaseUtils;
 import com.example.dishycloud.utils.CallBackData;
 import com.example.dishycloud.utils.ClientApi;
 import com.google.gson.Gson;
@@ -62,6 +64,80 @@ public class DishyRepositoryImp implements DishyRepository {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 callBackData.onFail("Không thể đăng nhập!");
+            }
+        });
+    }
+
+    @Override
+    public void getUser(String token, final CallBackData<User> callBackData) {
+        ClientApi clientApi = new ClientApi();
+
+        String header = "Bearer "+token;
+
+        Call<ResponseBody> bodyCall = clientApi.DishyService().getUser(header);
+        bodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code()==200){
+                    try {
+                        String result = response.body().string();
+                        Type type = new TypeToken<ReponseData<User>>(){}.getType();
+                        ReponseData<User> data = new Gson().fromJson(result,type);
+                        User user = data.getData();
+                        if (user!=null){
+                            callBackData.onSucess(user);
+                        }else{
+                            callBackData.onFail("Không có dữ liệu!");
+                        }
+                    }catch (Exception e){
+                        System.out.println("Lỗi quá trình parse dữ liệu");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("Không thể lấy thông tin");
+            }
+        });
+    }
+
+    @Override
+    public void postRecipe(String token, final CallBackData<Recipe> callBackData) {
+        ClientApi clientApi = new ClientApi();
+
+        String header = "Bearer "+token;
+
+
+//        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), recipeJson.toString());
+
+        Call<ResponseBody> bodyCall = clientApi.DishyService().postRecipe(header, BaseUtils.recipe);
+        bodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code()==200){
+                    try {
+                        String result = response.body().string();
+                        Type type = new TypeToken<ReponseData<Recipe>>(){}.getType();
+                        ReponseData<Recipe> data = new Gson().fromJson(result,type);
+                        Recipe recipe = data.getData();
+                        if (recipe!=null){
+                            callBackData.onSucess(recipe);
+                        }else{
+                            callBackData.onFail("1");
+                        }
+                    }catch (Exception e){
+                        System.out.println("2");
+                    }
+                }
+                else{
+                    callBackData.onFail("Responese: "+response.code()+" - "+response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("4");
             }
         });
     }

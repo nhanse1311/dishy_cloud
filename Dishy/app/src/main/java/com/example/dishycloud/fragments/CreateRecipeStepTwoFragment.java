@@ -22,6 +22,7 @@ import com.example.dishycloud.bottomSheets.BottomSheetChooseOption;
 import com.example.dishycloud.bottomSheets.CallBackOption;
 import com.example.dishycloud.models.ChooseOptionBottomSheet;
 import com.example.dishycloud.models.Material;
+import com.example.dishycloud.utils.BaseUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,8 @@ public class CreateRecipeStepTwoFragment extends Fragment implements View.OnClic
     private MaterialAdapter mMaterialAdapter;
     private List<Material> mMaterials = new ArrayList<>();
     public static OnStepTwoClickListener mOnStepTwoClickListener;
-
+    private String name, unit;
+    private double quantity;
 
     public static CreateRecipeStepTwoFragment newInstance() {
         CreateRecipeStepTwoFragment fragment = new CreateRecipeStepTwoFragment();
@@ -98,8 +100,9 @@ public class CreateRecipeStepTwoFragment extends Fragment implements View.OnClic
         optionBottomSheets.add(new ChooseOptionBottomSheet(2, "Kilogram"));
         optionBottomSheets.add(new ChooseOptionBottomSheet(3, "Millilit"));
         optionBottomSheets.add(new ChooseOptionBottomSheet(4, "Lit"));
-        optionBottomSheets.add(new ChooseOptionBottomSheet(5, "Muỗng cà phê"));
-        optionBottomSheets.add(new ChooseOptionBottomSheet(6, "Không có"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(5, "Muỗng"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(6, "Quả"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(7, "Không có"));
     }
 
     private void updateUIRV() {
@@ -159,8 +162,8 @@ public class CreateRecipeStepTwoFragment extends Fragment implements View.OnClic
             @Override
             public void onClick(View view) {
                 String name = edtName.getText().toString();
-                String quality = edtQuality.getText().toString().equals("") ? "0" : mEdtQuality.getText().toString();
-                String unit = (txtUnitDialog.getText().toString() != null || !txtUnitDialog.getText().toString().equals("")) ? txtUnitDialog.getText().toString() : "";
+                String quality = edtQuality.getText().toString().trim();
+                String unit = (txtUnitDialog.getText().toString() != null || !txtUnitDialog.getText().toString().equals("")) ? txtUnitDialog.getText().toString() : "Không có";
                 mMaterials.add(new Material(name, Double.parseDouble(quality), unit));
                 updateUIRV();
                 dialog.dismiss();
@@ -192,12 +195,13 @@ public class CreateRecipeStepTwoFragment extends Fragment implements View.OnClic
             public void onClick(View view) {
                 String name = edtName.getText().toString();
                 String quality = edtQuality.getText().toString();
-                String unit = (txtUnitDialog.getText().toString() == null || txtUnitDialog.getText().toString().equals("")) ? "" : txtUnitDialog.getText().toString();
+                String unit = (txtUnitDialog.getText().toString() == null || txtUnitDialog.getText().toString().equals("")) ? "Không có" : txtUnitDialog.getText().toString();
                 mEdtMaterialName.setText(name);
                 mEdtQuality.setText(quality);
                 mTxtUnit.setText(unit);
                 mEdtQuality.setEnabled(false);
                 mEdtMaterialName.setEnabled(false);
+                mTxtUnit.setEnabled(false);
                 dialog.dismiss();
             }
         });
@@ -228,7 +232,7 @@ public class CreateRecipeStepTwoFragment extends Fragment implements View.OnClic
                 String name = edtName.getText().toString();
                 String qualityStr = edtQuality.getText().toString().trim();
                 Double quality = Double.parseDouble(qualityStr.equals("") ? "0" : qualityStr);
-                String unit = (txtUnitDialog.getText().toString() == null || txtUnitDialog.getText().toString().equals("")) ? "" : txtUnitDialog.getText().toString();
+                String unit = (txtUnitDialog.getText().toString() == null || txtUnitDialog.getText().toString().equals("")) ? "Không có" : txtUnitDialog.getText().toString();
                 mMaterials.get(position).setName(name);
                 mMaterials.get(position).setQuality(quality);
                 mMaterials.get(position).setUnit(unit);
@@ -253,12 +257,21 @@ public class CreateRecipeStepTwoFragment extends Fragment implements View.OnClic
                 bottomSheetUnit();
                 break;
             case R.id.img_button_add:
-                mEdtMaterialName.setEnabled(false);
-                mEdtQuality.setEnabled(false);
-                mLLUnit.setEnabled(false);
+//                mEdtMaterialName.setEnabled(false);
+//                mEdtQuality.setEnabled(false);
+//                mLLUnit.setEnabled(false);
+//
+//                if (mMaterials.size()==0){
+//                    String nameOne = mEdtMaterialName.getText().toString().trim();
+//                    String quantityOneStr = mEdtQuality.getText().toString().trim();
+//                    double quantityOne = Double.parseDouble(quantityOneStr);
+//                    String unitOne = mTxtUnit.getText().toString().trim();
+//                    mMaterials.add(new Material(nameOne, quantityOne, unitOne));
+//                }
                 dialogAddMaterial();
                 break;
             case R.id.btn_next_step_wto:
+                BaseUtils.recipe.setMaterials(mMaterials);
                 mOnStepTwoClickListener.onClick(2);
                 break;
         }
