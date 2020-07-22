@@ -34,23 +34,55 @@
                 android:src="@drawable/ic_launcher_foreground"
                 android:scaleType="fitXY"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"/>
+                android:layout_height="170dp" />
+
             <LinearLayout
                 android:id="@+id/ll_cover_chef_white"
                 android:alpha="0.3"
                 android:orientation="vertical"
                 android:background="@color/colorWhite"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"/>
-            <ImageView
-                android:id="@+id/img_cover_back_butotn"
-                android:src="@drawable/ic_keyboard_black"
-                android:padding="@dimen/dp2"
-                android:background="@drawable/custom_frame_back"
-                android:layout_marginTop="@dimen/dp10"
-                android:layout_marginLeft="@dimen/dp15"
-                android:layout_width="@dimen/dp30"
-                android:layout_height="@dimen/dp30"/>
+                android:layout_height="170dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5">
+
+                    <ImageView
+                        android:id="@+id/img_cover_back_butotn"
+                        android:layout_width="@dimen/dp40"
+                        android:layout_height="@dimen/dp40"
+                        android:layout_marginLeft="@dimen/dp15"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:background="@drawable/custom_frame_back"
+                        android:padding="@dimen/dp5"
+                        android:src="@drawable/ic_keyboard_black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/dp0"
+                    android:gravity="right"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5">
+
+                    <ImageView
+                        android:id="@+id/img_cover_add_follow_butotn"
+                        android:layout_width="@dimen/dp40"
+                        android:layout_height="@dimen/dp40"
+                        android:layout_marginRight="@dimen/dp15"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:background="@drawable/custom_frame_back"
+                        android:padding="@dimen/dp5"
+                        android:src="@drawable/ic_add_follow" />
+                </LinearLayout>
+
+            </LinearLayout>
+
             <LinearLayout
                 android:gravity="center_horizontal"
                 android:padding="@dimen/dp10"
@@ -58,6 +90,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/riv_avatar_chef_activity"
                     app:riv_border_width="@dimen/dp2"

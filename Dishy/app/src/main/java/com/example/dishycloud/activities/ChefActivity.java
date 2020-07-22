@@ -22,15 +22,17 @@ import com.example.dishycloud.bottomSheets.CallBackOption;
 import com.example.dishycloud.models.Chef;
 import com.example.dishycloud.models.ChooseOptionBottomSheet;
 import com.example.dishycloud.models.Dishy;
+import com.example.dishycloud.views.AddFollowerView;
+import com.example.dishycloud.views.UnFollowerView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChefActivity extends AppCompatActivity implements View.OnClickListener {
+public class ChefActivity extends AppCompatActivity implements View.OnClickListener, AddFollowerView, UnFollowerView {
     private LinearLayout mLLCoverWhite;
-    private ImageView mImgCover, mImgButtonBack, mImgFillter;
+    private ImageView mImgCover, mImgButtonBack, mImgFillter, mImgAddFollower;
     private RoundedImageView mAvatar;
     private TextView mTxtNumberLiker, mTxtNumberRecipe, mTxtNameChef;
     private RecyclerView mRcvRecipe;
@@ -65,6 +67,7 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
         mTxtNumberRecipe = findViewById(R.id.txt_number_recipe_activity);
         mAvatar = findViewById(R.id.riv_avatar_chef_activity);
         mImgFillter = findViewById(R.id.img_fillter_ca);
+        mImgAddFollower = findViewById(R.id.img_cover_add_follow_butotn);
 
         mRcvRecipe = findViewById(R.id.rcv_recip_of_chef);
 //        GridLayoutManager gridLayoutManager = new GridLayoutManager(ChefActivity.this, 2);
@@ -75,6 +78,7 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void initData() {
+        mImgAddFollower.setOnClickListener(this);
         Intent intent = getIntent();
         if (intent != null) {
             mChef = (Chef) intent.getSerializableExtra("CHEF");
@@ -145,6 +149,28 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.img_fillter_ca:
                 showBottomSheetFillter();
                 break;
+            case R.id.img_cover_add_follow_butotn:
+                break;
         }
+    }
+
+    @Override
+    public void onAddFollowerSuccess() {
+
+    }
+
+    @Override
+    public void onAddFollowerFail(String message) {
+
+    }
+
+    @Override
+    public void onUnFollowSuccess() {
+
+    }
+
+    @Override
+    public void onUnFollowFail(String message) {
+
     }
 }
