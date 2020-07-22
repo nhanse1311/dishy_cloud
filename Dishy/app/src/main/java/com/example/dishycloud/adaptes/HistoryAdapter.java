@@ -12,16 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dishycloud.R;
 import com.example.dishycloud.models.DataHistory;
+import com.example.dishycloud.models.Recipe;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
     Context context;
-    List<DataHistory> dataHistoryList;
+    List<Recipe> dataHistoryList;
 
 
-    public HistoryAdapter(Context context, List<DataHistory> dataHistoryList) {
+    public HistoryAdapter(Context context, List<Recipe> dataHistoryList) {
         this.context = context;
         this.dataHistoryList = dataHistoryList;
     }
@@ -61,13 +62,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull HistoryAdapter.ViewHolder holder, int position) {
-        holder.txtNameFood.setText(dataHistoryList.get(position).getNameFood());
-        holder.txtLevel.setText(dataHistoryList.get(position).getLevel());
-        holder.txtLikeNumber.setText(dataHistoryList.get(position).getLikeNumber());
-        holder.txtTime.setText(dataHistoryList.get(position).getTime());
-        holder.txtStatus.setText(dataHistoryList.get(position).getStatus());
-        holder.txtTimeNumber.setText(dataHistoryList.get(position).getTimeNumber());
-        holder.like.setImageResource(dataHistoryList.get(position).getLike());
 //        holder.avatar.setImageResource(dataHistoryList.get(position).getAvatar());
         Picasso.Builder builder = new Picasso.Builder(context);
         builder.build().load(dataHistoryList.get(position).getImage())

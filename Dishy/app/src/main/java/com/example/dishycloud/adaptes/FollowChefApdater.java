@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dishycloud.R;
 import com.example.dishycloud.models.Chef;
+import com.example.dishycloud.models.User;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -22,14 +23,14 @@ public class FollowChefApdater extends RecyclerView.Adapter<FollowChefApdater.Vi
         void onClick(Chef chef);
     }
     private Context mContext;
-    private List<Chef> mChefs;
+    private List<User> mChefs;
     private OnFollowChefClickListener mOnFollowChefClickListener;
 
     public void setmOnFollowChefClickListener(OnFollowChefClickListener mOnFollowChefClickListener) {
         this.mOnFollowChefClickListener = mOnFollowChefClickListener;
     }
 
-    public FollowChefApdater(Context mContext, List<Chef> mChefs) {
+    public FollowChefApdater(Context mContext, List<User> mChefs) {
         this.mContext = mContext;
         this.mChefs = mChefs;
     }
@@ -45,13 +46,13 @@ public class FollowChefApdater extends RecyclerView.Adapter<FollowChefApdater.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Picasso.Builder builder = new Picasso.Builder(mContext);
-        builder.build().load(mChefs.get(position).getAvatar())
+        builder.build().load(mChefs.get(position).getAvartar())
                 .error(R.drawable.ic_launcher_foreground)
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.mAvatar);
-        holder.mTxtName.setText(mChefs.get(position).getName());
-        holder.mTxtNumberRecipe.setText(mChefs.get(position).getNumberRecipes() + " công thức");
-        holder.mTxtNumberPeopleLike.setText(mChefs.get(position).getNumberLiker()+ " người thích");
+        holder.mTxtName.setText(mChefs.get(position).getFullname());
+        holder.mTxtNumberRecipe.setText(mChefs.get(position).getNumberRecipe() + " công thức");
+        holder.mTxtNumberPeopleLike.setText(mChefs.get(position).getNumberFollower()+ " người theo dõi");
 
         holder.mTxtPositionChefFollow.setText(String.valueOf(position + 1));
 

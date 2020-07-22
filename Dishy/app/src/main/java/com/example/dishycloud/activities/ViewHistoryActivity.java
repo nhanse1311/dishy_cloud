@@ -2,6 +2,7 @@ package com.example.dishycloud.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,17 +12,19 @@ import com.example.dishycloud.R;
 import com.example.dishycloud.adaptes.SearchAdapter;
 import com.example.dishycloud.models.Dishy;
 import com.example.dishycloud.models.ItemsResult;
+import com.example.dishycloud.models.Recipe;
+import com.example.dishycloud.presenters.GetAllRecipeHistoryPresenter;
+import com.example.dishycloud.sqlites.DatabaseHelper;
+import com.example.dishycloud.views.GetAllRecipeHistoryView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewHistoryActivity extends AppCompatActivity {
+public class ViewHistoryActivity extends AppCompatActivity implements View.OnClickListener, GetAllRecipeHistoryView<Recipe> {
 
     private List<ItemsResult> itemsResults;
     private RecyclerView recyclerView;
     private SearchAdapter searchAdapter;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class ViewHistoryActivity extends AppCompatActivity {
         itemsResults.add(new ItemsResult("Gà hầm thuốc bắc", "250 like", "Bá Khánh", "40 phút", "Ăn chính", "Trung bình", R.drawable.ic_favorite_border_black, "3 công thức", "https://toinayangi.vn/wp-content/uploads/2015/08/g%C3%A0-h%E1%BA%A7m-thu%E1%BB%91c-b%E1%BA%AFc.jpg", "https://scontent.fsgn10-1.fna.fbcdn.net/v/t1.0-1/70205972_1445859698901960_6020314693128683520_n.jpg?_nc_cat=111&_nc_oc=AQlb5oGWp-hplgb-lY9fSd9yyxKfdaF9sBELeGp2pWzeBOz9TBk5Pa2Hq4qSYy2i054&_nc_ht=scontent.fsgn10-1.fna&oh=d20e20e77ceffdfdd97896217f94dd1c&oe=5E3A16D7"));
 
         updateRecycler();
+
     }
     private void initView() {
         recyclerView = findViewById(R.id.rcv_view_history);
@@ -64,6 +68,21 @@ public class ViewHistoryActivity extends AppCompatActivity {
         } else {
             searchAdapter.notifyDataSetChanged();
         }
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    @Override
+    public void onSuccess(List<Recipe> list) {
+        updateRecycler();
+    }
+
+    @Override
+    public void onFail(String message) {
 
     }
 }

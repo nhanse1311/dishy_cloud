@@ -20,15 +20,28 @@ public interface DishyService {
 
     @POST(ConfigAPI.Api.LOGIN)
     Call<ResponseBody> login(@Body RequestBody requestBody);
-<<<<<<< HEAD
 
     @GET(ConfigAPI.Api.USER)
     Call<ResponseBody> getUser(@Header("Authorization") String header);
 
     @POST(ConfigAPI.Api.RECIPE)
     Call<ResponseBody> postRecipe(@Header("Authorization") String header, @Body Recipe requestBody);
-=======
+
     @POST(ConfigAPI.Api.REGISTER)
     Call<ResponseBody> register(@Body RequestBody requestBody);
->>>>>>> e9987c503e38607b70d19ab5ef2f2a750facb7ef
+
+    @GET(ConfigAPI.Api.RECIPESUGGESTION)
+    Call<ResponseBody> getAllRecipeSuggestion(@Header("Authorization") String header);
+
+    @GET((ConfigAPI.Api.RECIPETOP))
+    Call<ResponseBody> getAllRecipeTop(@Header("Authorization") String header);
+
+    @GET((ConfigAPI.Api.RECIPEHISTORY))
+    Call<ResponseBody> getAllRecipeHistory(@Header("Authorization") String header);
+
+    @GET(ConfigAPI.Api.TOPCHEF)
+    Call<ResponseBody> getTopChef(@Header("Authorization") String header);
+
+    @GET((ConfigAPI.Api.FOLLOWER))
+    Call<ResponseBody> getFollower(@Header("Authorization") String header);
 }
