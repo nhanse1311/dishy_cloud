@@ -22,6 +22,8 @@ public class StepMake implements Serializable {
     private String video;
     private Uri urlImgeOne;
     private Uri urlImgWto;
+    private String imagePath1;
+    private String imagePath2;
 
 
     public StepMake(String descrip, boolean prepairStage, Uri imageOne, Uri imageTwo) {
@@ -31,20 +33,24 @@ public class StepMake implements Serializable {
         this.urlImgWto = imageTwo;
     }
 
-    public StepMake(String descrip, boolean prepairStage, String urlImgeOne, String urlImgWto) {
+    public StepMake(String descrip, boolean prepairStage, String image1, String image2) {
         this.description = descrip;
         this.isRepair = prepairStage;
-        this.image1 = urlImgeOne;
-        this.image2 = urlImgWto;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.imagePath1 = imagePath1;
+        this.imagePath2 = imagePath2;
     }
 
-    public StepMake(String description, boolean isRepair, String image1, String image2, Uri urlImgeOne, Uri urlImgWto) {
+    public StepMake(String description, boolean isRepair, String image1, String image2, Uri urlImgeOne, Uri urlImgWto,String imagePath1, String imagePath2) {
         this.description = description;
         this.isRepair = isRepair;
         this.image1 = image1;
         this.image2 = image2;
         this.urlImgeOne = urlImgeOne;
         this.urlImgWto = urlImgWto;
+        this.imagePath1 = imagePath1;
+        this.imagePath2 = imagePath2;
     }
 
     public String getDescription() {
@@ -109,5 +115,21 @@ public class StepMake implements Serializable {
 
     public void setVideo(String video) {
         this.video = video;
+    }
+
+    public String getImagePath1() {
+        return imagePath1;
+    }
+
+    public void setImagePath1(String imagePath1) {
+        this.imagePath1 = imagePath1;
+    }
+
+    public String getImagePath2() {
+        return imagePath2;
+    }
+
+    public void setImagePath2(String imagePath2) {
+        this.imagePath2 = imagePath2;
     }
 }

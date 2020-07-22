@@ -18,10 +18,18 @@ public class Recipe implements Serializable {
     private int levelRecipe;
     @SerializedName("numberPeople")
     private int numberPeople;
+    @SerializedName("liked")
+    private int liked;
+    @SerializedName("disliked")
+    private int disliked;
+    @SerializedName("createBy")
+    private String createBy;
     @SerializedName("materials")
     private List<Material> materials;
     @SerializedName("steps")
     private List<StepMake> steps;
+
+    private String imagePath;
 
     public Recipe(String name, String description, String image, int timeCook, int levelRecipe, int numberPeople, List<Material> materials, List<StepMake> steps) {
         this.name = name;
@@ -34,10 +42,11 @@ public class Recipe implements Serializable {
         this.steps = steps;
     }
 
-    public Recipe(String name, String description, String image, int timeCook, int levelRecipe, int numberPeople) {
+    public Recipe(String name, String description, String image, String imagePath,int timeCook, int levelRecipe, int numberPeople) {
         this.name = name;
         this.description = description;
         this.image = image;
+        this.imagePath  = imagePath;
         this.timeCook = timeCook;
         this.levelRecipe = levelRecipe;
         this.numberPeople = numberPeople;
@@ -105,5 +114,37 @@ public class Recipe implements Serializable {
 
     public void setSteps(List<StepMake> steps) {
         this.steps = steps;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public int getLiked() {
+        return liked;
+    }
+
+    public void setLiked(int liked) {
+        this.liked = liked;
+    }
+
+    public int getDisliked() {
+        return disliked;
+    }
+
+    public void setDisliked(int disliked) {
+        this.disliked = disliked;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
     }
 }

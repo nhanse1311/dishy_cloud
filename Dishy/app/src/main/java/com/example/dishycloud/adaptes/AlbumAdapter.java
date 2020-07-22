@@ -11,17 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.dishycloud.R;
 import com.example.dishycloud.models.Dishy;
+import com.example.dishycloud.models.Recipe;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
     public interface OnAlbumClickListener{
-        void OnClick(Dishy dishy);
+        void OnClick(Recipe recipe);
     }
 
     private Context mContext;
-    private List<Dishy> mDishies;
+    private List<Recipe> mDishies;
     private boolean mIsMyAlbum;
     private OnAlbumClickListener mOnAlbumClickListener;
 
@@ -29,7 +30,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         this.mOnAlbumClickListener = mOnAlbumClickListener;
     }
 
-    public AlbumAdapter(Context context, List<Dishy> dishies, boolean isMyAlbum) {
+    public AlbumAdapter(Context context, List<Recipe> dishies, boolean isMyAlbum) {
         mContext = context;
         mDishies = dishies;
         mIsMyAlbum = isMyAlbum;
@@ -46,9 +47,9 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.mTxtName.setText(mDishies.get(position).getName());
-        holder.mTxtTime.setText(mDishies.get(position).getTime());
+        holder.mTxtTime.setText(mDishies.get(position).getTimeCook()+" phút");
         holder.mTxtOrderRecipe.setText(String.valueOf(position+1));
-
+        holder.mtxtLike.setText(String.valueOf(mDishies.get(position).getLiked()));
         if (mIsMyAlbum) {
             holder.mTxtOption.setText("Chỉnh sửa");
         } else {
@@ -76,7 +77,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     }
 
     protected class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView mTxtName, mTxtTime, mTxtOrderRecipe, mTxtOption;
+        private TextView mTxtName, mTxtTime, mTxtOrderRecipe, mTxtOption, mtxtLike;
         private ImageView mImageFood;
 
         public ViewHolder(@NonNull View itemView) {
@@ -86,6 +87,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
             mTxtName = itemView.findViewById(R.id.txt_name_recipe_chef_save);
             mImageFood = itemView.findViewById(R.id.img_recipe_chef_save);
             mTxtOption = itemView.findViewById(R.id.txt_option_save);
+            mtxtLike = itemView.findViewById(R.id.txt_ablum_like);
         }
     }
 }

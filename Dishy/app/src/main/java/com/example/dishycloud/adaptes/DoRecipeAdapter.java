@@ -19,13 +19,15 @@ import java.util.List;
 public class DoRecipeAdapter extends PagerAdapter {
     private Context mContext;
     private List<StepMake> mStepMakes;
-    public ImageView mImgMain, mImgDotOne, mImgDotWto;
-    private TextView mTxtPrepair, mTxtDesc;
+
 
     public DoRecipeAdapter(Context mContext, List<StepMake> mStepMakes) {
         this.mContext = mContext;
         this.mStepMakes = mStepMakes;
     }
+    
+    public ImageView mImgMain, mImgDotOne, mImgDotWto;
+    private TextView mTxtPrepair, mTxtDesc;
 
     @NonNull
     @Override

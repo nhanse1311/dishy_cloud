@@ -1,15 +1,19 @@
 package com.example.dishycloud.fragments;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,17 +35,21 @@ import com.example.dishycloud.adaptes.StepMakeAdapter;
 import com.example.dishycloud.models.StepMake;
 import com.example.dishycloud.presenters.CreateRecipePresenter;
 import com.example.dishycloud.presenters.GetUserPresenter;
+import com.example.dishycloud.presenters.PostImagePresenter;
 import com.example.dishycloud.sqlites.DatabaseHelper;
 import com.example.dishycloud.utils.BaseUtils;
+import com.example.dishycloud.utils.ReadPathUtil;
 import com.example.dishycloud.views.CreateRecipeView;
+import com.example.dishycloud.views.PostImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class CreateRecipeStepThreeFragment extends Fragment implements View.OnClickListener, CreateRecipeView {
+public class CreateRecipeStepThreeFragment extends Fragment implements View.OnClickListener, CreateRecipeView, PostImageView {
     private static int TAKE_PIC_1 = 9801;
     private static int TAKE_PIC_2 = 9802;
     private static int TAKE_PIC_1_DIALOG = 9811;
@@ -55,7 +63,7 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
     private ImageView mImgDialog1, mImgDialog2;
     private ImageView mImgPicOne, mImgPicWto, mImgAddMakeStep, mImgEditStep1;
     private Bitmap mBmImgDialog1, mBmImgDialog2;
-    private String mEncodeImg1 = "", mEncodeImg2 = "";
+    private String mEncodeImg1 = "", mEncodeImg2 = "", mImg1Path, mImg2Path;
     private Uri mUriImage1, mUriImage2;
     private StepMake mStepMake;
     private List<StepMake> mStepMakes = new ArrayList<>();
@@ -64,6 +72,7 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
     private Dialog mDialogLoading;
 
     private CreateRecipePresenter mCreateRecipePresenter;
+    private PostImagePresenter mPostImagePresenter;
     private DatabaseHelper mDatabaseHelper;
 
 
@@ -98,18 +107,18 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == TAKE_PIC_1_DIALOG && resultCode == Activity.RESULT_OK) {
-            mUriImage1 = data.getData();
+            mImg1Path = ReadPathUtil.getPath(getContext(), data.getData());
+
+            mUriImage1 = Uri.fromFile(new File(mImg1Path));
             mImgDialog1.setImageURI(mUriImage1);
-            ContentResolver cr = getActivity().getContentResolver();
-            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-            mEncodeImg1 = System.currentTimeMillis() + "." + mimeTypeMap.getExtensionFromMimeType(cr.getType(mUriImage1));
+            mImgDialog1.setScaleType(ImageView.ScaleType.FIT_XY);
 
         } else if (requestCode == TAKE_PIC_2_DIALOG && resultCode == Activity.RESULT_OK) {
-            mUriImage2 = data.getData();
+            mImg2Path = ReadPathUtil.getPath(getContext(), data.getData());
+
+            mUriImage2 = Uri.fromFile(new File(mImg2Path));
             mImgDialog2.setImageURI(mUriImage2);
-            ContentResolver cr = getActivity().getContentResolver();
-            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-            mEncodeImg2 = System.currentTimeMillis() + "." + mimeTypeMap.getExtensionFromMimeType(cr.getType(mUriImage2));
+            mImgDialog2.setScaleType(ImageView.ScaleType.FIT_XY);
         }
     }
 
@@ -132,6 +141,7 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
     private void initData() {
         mDatabaseHelper = new DatabaseHelper(getContext());
         mCreateRecipePresenter = new CreateRecipePresenter(this);
+        mPostImagePresenter = new PostImagePresenter(getContext(), this);
 
         mImgPicOne.setOnClickListener(this);
         mImgPicWto.setOnClickListener(this);
@@ -144,20 +154,35 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
         updateUIRCV();
     }
 
+    //Check permistion android 6.0
+    private void checkPermistion() {
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        1);
+            }
+        }
+    }
+
     private void pickFromGallery(int picNumber) {
+        checkPermistion();
         //Create an Intent with action as ACTION_PICK
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        // Sets the type as image/*. This ensures only components of type image are selected
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
         if (picNumber == 1) {
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), TAKE_PIC_1);
+            startActivityForResult(intent, TAKE_PIC_1);
         } else if (picNumber == 2) {
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), TAKE_PIC_2);
+            startActivityForResult(intent, TAKE_PIC_2);
         } else if (picNumber == 3) {
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), TAKE_PIC_1_DIALOG);
+            startActivityForResult(intent, TAKE_PIC_1_DIALOG);
         } else if (picNumber == 4) {
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), TAKE_PIC_2_DIALOG);
+            startActivityForResult(intent, TAKE_PIC_2_DIALOG);
         }
     }
 
@@ -204,7 +229,7 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
             public void onClick(View view) {
                 String desc = edtDes.getText().toString().trim();
                 boolean check = cbPrepair.isChecked();
-                mStepMakes.add(new StepMake(desc, check, mEncodeImg1, mEncodeImg2, mUriImage1, mUriImage2));
+                mStepMakes.add(new StepMake(desc, check, mEncodeImg1, mEncodeImg2, mUriImage1, mUriImage2, mImg1Path, mImg2Path));
                 dialog.dismiss();
                 updateUIRCV();
             }
@@ -363,7 +388,13 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
                 BaseUtils.recipe.setSteps(mStepMakes);
                 String token = mDatabaseHelper.getToken();
                 mDialogLoading.show();
-                mCreateRecipePresenter.createRecipe(mDatabaseHelper.getToken());
+                List<String> listImagePath = new ArrayList<>();
+                listImagePath.add(BaseUtils.recipe.getImagePath());
+                for (int i = 0; i < BaseUtils.recipe.getSteps().size(); i++) {
+                    listImagePath.add(BaseUtils.recipe.getSteps().get(i).getImagePath1());
+                    listImagePath.add(BaseUtils.recipe.getSteps().get(i).getImagePath2());
+                }
+                mPostImagePresenter.postImage(token, listImagePath);
                 break;
         }
     }
@@ -378,5 +409,29 @@ public class CreateRecipeStepThreeFragment extends Fragment implements View.OnCl
     public void onFail(String message) {
         mDialogLoading.dismiss();
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onPostImageSucces(List<String> imageName) {
+        BaseUtils.recipe.setImage("https://myappapi01.azurewebsites.net/images/" + imageName.get(0));
+        int sizeStep = BaseUtils.recipe.getSteps().size();
+        int sizeImageName = imageName.size();
+        int value1 = 1;
+        int value2 = 2;
+        for(int i =0; i< sizeStep;i++){
+            BaseUtils.recipe.getSteps().get(i).setImage1("https://myappapi01.azurewebsites.net/images/" + imageName.get(value1));
+            if(value2<sizeImageName){
+                BaseUtils.recipe.getSteps().get(i).setImage2("https://myappapi01.azurewebsites.net/images/" + imageName.get(value2));
+            }
+            value1+=2;
+            value2+=2;
+        }
+        mCreateRecipePresenter.createRecipe(mDatabaseHelper.getToken(), BaseUtils.recipe);
+        System.out.println();
+    }
+
+    @Override
+    public void onPostImageFail(String fail) {
+
     }
 }

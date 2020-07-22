@@ -54,9 +54,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         mLoginPresenter.onLogin(username,password);
     }
 
-<<<<<<< HEAD
-
-=======
     public void clickToSignUp(View view){
         btn_SignUp.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -68,7 +65,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         });
 
     }
->>>>>>> e9987c503e38607b70d19ab5ef2f2a750facb7ef
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

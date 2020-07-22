@@ -100,7 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:text="Ẩm thực Trung Hoa đa dạng, phong phú như một quyển tiểu thuyết dài tập, không bao giờ kể hết được. Những món ăn ở đây đều có ý nghĩa của nó. Mì trường thọ là một trong những món như vậy, chúng ta cùng tìm hiểu món ăn ngon đặc biệt này nhé!"
+                    android:id="@+id/txt_decription_mc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/dp5"/>

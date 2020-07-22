@@ -102,7 +102,9 @@ public class CreateRecipeStepTwoFragment extends Fragment implements View.OnClic
         optionBottomSheets.add(new ChooseOptionBottomSheet(4, "Lit"));
         optionBottomSheets.add(new ChooseOptionBottomSheet(5, "Muỗng"));
         optionBottomSheets.add(new ChooseOptionBottomSheet(6, "Quả"));
-        optionBottomSheets.add(new ChooseOptionBottomSheet(7, "Không có"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(7, "Củ"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(8, "Con"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(9, "Không có"));
     }
 
     private void updateUIRV() {

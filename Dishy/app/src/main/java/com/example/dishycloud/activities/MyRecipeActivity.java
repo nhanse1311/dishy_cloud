@@ -19,6 +19,7 @@ import com.example.dishycloud.adaptes.MaterialRecipeAdapter;
 import com.example.dishycloud.adaptes.StepMakeRecipeAdapter;
 import com.example.dishycloud.models.Dishy;
 import com.example.dishycloud.models.Material;
+import com.example.dishycloud.models.Recipe;
 import com.example.dishycloud.models.StepMake;
 import com.squareup.picasso.Picasso;
 
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyRecipeActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView mTxtNumberCount, mTxtNameRecipe, mTxtFavorite;
+    private TextView mTxtNumberCount, mTxtNameRecipe, mTxtDecription,mTxtFavorite;
     private Button mBtnDiv, mBtnSum, mBtnDoRecipe;
     private ImageView mImgAvatarRecipe, mImgFavorite, mImgBack, mImgDelete, mImgUpdate;
     private Toolbar mToolbar;
@@ -41,7 +42,7 @@ public class MyRecipeActivity extends AppCompatActivity implements View.OnClickL
 
     private int numberCount;
     private int numberEater;
-    private Dishy dishy;
+    private Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class MyRecipeActivity extends AppCompatActivity implements View.OnClickL
         mBtnDoRecipe = findViewById(R.id.btn_do_recipe_mra);
         mImgDelete = findViewById(R.id.img_button_remove);
         mImgUpdate = findViewById(R.id.img_button_edit);
+        mTxtDecription = findViewById(R.id.txt_decription_mc);
     }
 
     private void initData() {
@@ -86,29 +88,30 @@ public class MyRecipeActivity extends AppCompatActivity implements View.OnClickL
         mImgUpdate.setOnClickListener(this);
         mImgDelete.setOnClickListener(this);
 
-        dishy = (Dishy) getIntent().getSerializableExtra("MYDISHY");
+        recipe = (Recipe) getIntent().getSerializableExtra("MYDISHY");
 
         Picasso.Builder builder = new Picasso.Builder(MyRecipeActivity.this);
-        builder.build().load(dishy.getImage())
+        builder.build().load(recipe.getImage())
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background).into(mImgAvatarRecipe);
 
-        mTxtFavorite.setText(String.valueOf(dishy.getNumberFavorite()));
-        mTxtNameRecipe.setText(dishy.getName());
+        mTxtFavorite.setText(String.valueOf(recipe.getLiked()));
+        mTxtNameRecipe.setText(recipe.getName());
+        mTxtDecription.setText(recipe.getDescription());
 
         mMaterials = new ArrayList<>();
-        mMaterials = dishy.getMaterials();
+        mMaterials = recipe.getMaterials();
 
-        numberEater = dishy.getEater();
+        numberEater = recipe.getNumberPeople();
         mTxtNumberCount.setText(String.valueOf(numberEater));
         numberCount = Integer.parseInt(mTxtNumberCount.getText().toString().trim());
 
         updateRcvMaterial(numberCount, numberEater);
         mStepMakes = new ArrayList<>();
-        mStepMakes = dishy.getMakes();
+        mStepMakes = recipe.getSteps();
         updateRcvStepMake();
 
-        mToolbar.setTitle(dishy.getName());
+        mToolbar.setTitle(recipe.getName());
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,8 +199,8 @@ public class MyRecipeActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.btn_do_recipe:
                 Intent intent = new Intent(MyRecipeActivity.this, DoRecipeActivity.class);
-                intent.putExtra("NAME", dishy.getName());
-                intent.putExtra("STEP", (Serializable) dishy.getMakes());
+                intent.putExtra("NAME", recipe.getName());
+                intent.putExtra("STEP", (Serializable) recipe.getSteps());
                 startActivity(intent);
                 break;
 
@@ -206,7 +209,7 @@ public class MyRecipeActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.img_button_edit:
                 Intent moveEdit = new Intent(MyRecipeActivity.this,EditRecipeActivity.class);
-                moveEdit.putExtra("EDIT",dishy);
+                moveEdit.putExtra("EDIT",recipe);
                 MyRecipeActivity.this.startActivity(moveEdit);
                 break;
         }

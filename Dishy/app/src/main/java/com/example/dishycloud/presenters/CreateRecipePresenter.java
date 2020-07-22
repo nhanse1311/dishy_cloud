@@ -15,8 +15,8 @@ public class CreateRecipePresenter {
         this.mDishyRepository = new DishyRepositoryImp();
     }
 
-    public void createRecipe(String token){
-        mDishyRepository.postRecipe(token, new CallBackData<Recipe>() {
+    public void createRecipe(String token, Recipe recipe){
+        mDishyRepository.postRecipe(token,recipe, new CallBackData<Recipe>() {
             @Override
             public void onSucess(Recipe recipe) {
                 mCreateRecipeView.onSuccess();

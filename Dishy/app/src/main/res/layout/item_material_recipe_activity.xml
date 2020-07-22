@@ -20,7 +20,7 @@
         android:id="@+id/txt_name_ra"
         android:text="Nước dừa"
         android:layout_marginLeft="@dimen/dp5"
-        android:layout_weight="6"
+        android:layout_weight="5"
         android:layout_width="@dimen/dp0"
         android:textSize="@dimen/sp18"
         android:textStyle="bold"
@@ -37,8 +37,8 @@
     <TextView
         android:id="@+id/txt_unit_material_ra"
         android:text="Muỗng"
-        android:textSize="@dimen/sp15"
-        android:layout_weight="1.5"
+        android:textSize="@dimen/sp13"
+        android:layout_weight="2"
         android:gravity="right"
         android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"/>
