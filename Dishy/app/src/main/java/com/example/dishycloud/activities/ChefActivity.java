@@ -22,6 +22,10 @@ import com.example.dishycloud.bottomSheets.CallBackOption;
 import com.example.dishycloud.models.Chef;
 import com.example.dishycloud.models.ChooseOptionBottomSheet;
 import com.example.dishycloud.models.Dishy;
+import com.example.dishycloud.models.User;
+import com.example.dishycloud.presenters.follower.AddFollowerPresenter;
+import com.example.dishycloud.presenters.follower.UnFollowerPresenter;
+import com.example.dishycloud.sqlites.DatabaseHelper;
 import com.example.dishycloud.views.AddFollowerView;
 import com.example.dishycloud.views.UnFollowerView;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -36,10 +40,14 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
     private RoundedImageView mAvatar;
     private TextView mTxtNumberLiker, mTxtNumberRecipe, mTxtNameChef;
     private RecyclerView mRcvRecipe;
-    private Chef mChef;
+    private User mChef;
     private RecipeOfChefAdapter mRecipeOfChefAdapter;
     private Toolbar mToolbar;
     private NestedScrollView mScrollView;
+    private AddFollowerPresenter mAddFollowerPresenter;
+    private UnFollowerPresenter mUnFollowerPresenter;
+    private DatabaseHelper mDatabaseHelper;
+    private boolean mCheckFollow = false;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -81,7 +89,7 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
         mImgAddFollower.setOnClickListener(this);
         Intent intent = getIntent();
         if (intent != null) {
-            mChef = (Chef) intent.getSerializableExtra("CHEF");
+            mChef = (User) intent.getSerializableExtra("CHEF");
             updateUI(mChef);
         }
 
@@ -98,21 +106,25 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+
+        mAddFollowerPresenter = new AddFollowerPresenter(this, this);
+        mUnFollowerPresenter = new UnFollowerPresenter(this, this);
+        mDatabaseHelper = new DatabaseHelper(this);
     }
 
-    private void updateUI(Chef chef) {
+    private void updateUI(User chef) {
         Picasso.Builder builder = new Picasso.Builder(ChefActivity.this);
-        builder.build().load(chef.getAvatar())
+        builder.build().load(chef.getAvartar())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground).into(mImgCover);
-        builder.build().load(chef.getAvatar())
+        builder.build().load(chef.getAvartar())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground).into(mAvatar);
-        mTxtNameChef.setText(chef.getName());
-        mToolbar.setTitle(chef.getName());
-        mTxtNumberLiker.setText(chef.getNumberLiker() + " người theo dõi");
-        mTxtNumberRecipe.setText(chef.getNumberRecipes() + " công thức");
-        updateRcvRecipeOfChef(chef.getDishyList());
+        mTxtNameChef.setText(chef.getFullname());
+        mToolbar.setTitle(chef.getFullname());
+        mTxtNumberLiker.setText(chef.getNumberFollower() + " người theo dõi");
+        mTxtNumberRecipe.setText(chef.getNumberRecipe() + " công thức");
+//        updateRcvRecipeOfChef(chef.getDishyList());
     }
 
     private void updateRcvRecipeOfChef(List<Dishy> dishies) {
@@ -150,13 +162,19 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
                 showBottomSheetFillter();
                 break;
             case R.id.img_cover_add_follow_butotn:
+                if (mCheckFollow==false){
+                    mAddFollowerPresenter.addFollower(mDatabaseHelper.getToken(), mDatabaseHelper.getUsername(),mChef.getUsername());
+                }else if (mCheckFollow==true){
+                    mUnFollowerPresenter.unFollow(mDatabaseHelper.getToken(), mDatabaseHelper.getUsername(),mChef.getUsername());
+                }
                 break;
         }
     }
 
     @Override
     public void onAddFollowerSuccess() {
-
+        mImgAddFollower.setImageResource(R.drawable.ic_check);
+        mCheckFollow = true;
     }
 
     @Override
@@ -166,7 +184,8 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onUnFollowSuccess() {
-
+        mImgAddFollower.setImageResource(R.drawable.ic_add_follow);
+        mCheckFollow = false;
     }
 
     @Override

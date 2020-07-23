@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dishycloud.R;
 import com.example.dishycloud.models.Chef;
+import com.example.dishycloud.models.User;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -20,17 +21,17 @@ import java.util.List;
 
 public class TopChefAdapter extends RecyclerView.Adapter<TopChefAdapter.ViewHolder> {
     public interface  OnTopChefClickListener{
-        void onClick(Chef chef);
+        void onClick(User user);
     }
     private Context mContext;
-    private List<Chef> mChefs;
+    private List<User> mChefs;
     private OnTopChefClickListener mOnTopChefClickListener;
 
     public void setmOnTopChefClickListener(OnTopChefClickListener mOnTopChefClickListener) {
         this.mOnTopChefClickListener = mOnTopChefClickListener;
     }
 
-    public TopChefAdapter(Context mContext, List<Chef> mChefs) {
+    public TopChefAdapter(Context mContext, List<User> mChefs) {
         this.mContext = mContext;
         this.mChefs = mChefs;
     }
@@ -46,14 +47,14 @@ public class TopChefAdapter extends RecyclerView.Adapter<TopChefAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Picasso.Builder builder = new Picasso.Builder(mContext);
-        builder.build().load(mChefs.get(position).getAvatar())
+        builder.build().load(mChefs.get(position).getAvartar())
                 .error(R.drawable.ic_launcher_foreground)
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.mAvatar);
-        holder.mtxtName.setText(mChefs.get(position).getName());
-        holder.mTxtNumberRecipe.setText(mChefs.get(position).getNumberRecipes() + " công thức");
+        holder.mtxtName.setText(mChefs.get(position).getFullname());
+        holder.mTxtNumberRecipe.setText(mChefs.get(position).getNumberRecipe() + " công thức");
         holder.mTxtOrder.setText(String.valueOf(position + 1));
-        holder.mTxtNumberPeopleLike.setText(mChefs.get(position).getNumberLiker()+ " người thích");
+        holder.mTxtNumberPeopleLike.setText(mChefs.get(position).getNumberFollower()+ " người theo dõi");
         if (position == 0) {
             holder.mAvatar.setBorderColor(Color.parseColor("#C5392F"));
             holder.mTxtOrder.setBackgroundResource(R.drawable.custom_order_top_1);

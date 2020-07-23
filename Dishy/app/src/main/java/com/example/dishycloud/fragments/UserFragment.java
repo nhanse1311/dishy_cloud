@@ -26,8 +26,10 @@ import com.example.dishycloud.adaptes.RecipeConcernAdapter;
 import com.example.dishycloud.models.Chef;
 import com.example.dishycloud.models.ItemsQuickSearch;
 import com.example.dishycloud.models.User;
+import com.example.dishycloud.presenters.GetFollowerPresenter;
 import com.example.dishycloud.presenters.GetUserPresenter;
 import com.example.dishycloud.sqlites.DatabaseHelper;
+import com.example.dishycloud.views.GetFollowerView;
 import com.example.dishycloud.views.GetInfoVIew;
 import com.squareup.picasso.Picasso;
 
@@ -35,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserFragment extends Fragment implements View.OnClickListener, GetInfoVIew<User> {
+public class UserFragment extends Fragment implements View.OnClickListener, GetInfoVIew<User>, GetFollowerView<User> {
     private View mView;
     private RecyclerView mRecycleView, mRecycleViewConcern;
     private FollowChefApdater mFollowAdapter;
@@ -47,7 +49,7 @@ public class UserFragment extends Fragment implements View.OnClickListener, GetI
     private Button mBtnLogout;
     private DatabaseHelper mDatabaseHelper;
     private GetUserPresenter mGetUserPresenter;
-
+    private GetFollowerPresenter mGetFollowerPresenter;
     private TextView mTxtFullname;
     private TextView mTxtFollower;
     private TextView mTxtRecipe;
@@ -92,20 +94,12 @@ public class UserFragment extends Fragment implements View.OnClickListener, GetI
 
     private void initData() {
         mDatabaseHelper = new DatabaseHelper(getContext());
+        // get userinfor
         mGetUserPresenter =  new GetUserPresenter(this);
         mGetUserPresenter.getUser(mDatabaseHelper.getToken());
-
-        if (items == null) {
-            items = new ArrayList<Chef>();
-        }
-
-        Chef chef1 = new Chef("https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-1/p320x320/61090498_1285841494925963_1183091008456359936_n.jpg?_nc_cat=101&_nc_oc=AQkXDsimHahDSzxF7BS9NbBvgox8P-BAyPNh2DvJlOZdkZqhBm3KS206w5f7cw1PBneiFi6EtydeF5Gf1avxxUxS&_nc_ht=scontent.fsgn5-1.fna&oh=5092122e39724a586043169cf47d0696&oe=5E2FC72F","Nguyễn Thanh Nhàn",100,1000,null);
-        Chef chef3 = new Chef("https://scontent.fsgn5-2.fna.fbcdn.net/v/t1.0-1/c0.0.320.320a/p320x320/10599638_1504520149789789_4487427289442049165_n.jpg?_nc_cat=107&_nc_oc=AQne8gyZOiKbnc5zvKNLPtE9JeuC3flPcvR_za52mOc-3TbE4W7PH4f7z6JNwOznFtH-JPIglXn769P5Kl4ORJ0e&_nc_ht=scontent.fsgn5-2.fna&oh=4a4dbfc66aa3a1fb5aeeefa754ce422f&oe=5E2E96E2","Nguyễn Văn Lương",20,300,null);
-        Chef chef2 = new Chef("https://scontent.fsgn5-3.fna.fbcdn.net/v/t1.0-1/p320x320/70205972_1445859698901960_6020314693128683520_n.jpg?_nc_cat=111&_nc_oc=AQlqW0sH4rpBiS2IPFfCEaorz-_7CDmDvZCV3YdL5u0-dyJcqxhMRJMtySaDEMPjS-uGvtyeUqP4ZJT4328aZLhU&_nc_ht=scontent.fsgn5-3.fna&oh=ea35b802e27df0b8c9f7bc852baec68f&oe=5E023271","Nguyễn Hoàng Bá Khánh",100,450,null);
-        items.add(chef1);
-        items.add(chef3);
-        items.add(chef2);
-        updateRcv();
+        // list follower
+        mGetFollowerPresenter = new GetFollowerPresenter(this);
+        mGetFollowerPresenter.getFollower(mDatabaseHelper.getToken());
 
         mTxtEditAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,9 +112,9 @@ public class UserFragment extends Fragment implements View.OnClickListener, GetI
         mBtnLogout.setOnClickListener(this);
     }
 
-    private void updateRcv() {
+    private void updateRcv(List<User> listUser) {
         if (mFollowAdapter == null) {
-            mFollowAdapter = new FollowChefApdater(getContext(), items);
+            mFollowAdapter = new FollowChefApdater(getContext(), listUser);
             mRecycleView.setAdapter(mFollowAdapter);
         } else {
             mFollowAdapter.notifyDataSetChanged();
@@ -148,6 +142,11 @@ public class UserFragment extends Fragment implements View.OnClickListener, GetI
                 .error(R.drawable.ic_launcher_foreground)
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(mImgAvatar);
+    }
+
+    @Override
+    public void onSuccess(List<User> chefList) {
+        updateRcv(chefList);
     }
 
     @Override

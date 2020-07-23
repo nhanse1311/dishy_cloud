@@ -11,23 +11,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.dishycloud.R;
 import com.example.dishycloud.models.Dishy;
+import com.example.dishycloud.models.Recipe;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class DishyTodayAdapter extends RecyclerView.Adapter<DishyTodayAdapter.ViewHolder> {
     public interface OnDishyToDayClickListener{
-        void onClick(Dishy dishy);
+        void onClick(Recipe recipe);
     }
     private Context mContext;
-    private List<Dishy> mDishyList;
+    private List<Recipe> mDishyList;
     private OnDishyToDayClickListener mOnDishyToDayClickListener;
 
     public void setmOnDishyToDayClickListener(OnDishyToDayClickListener mOnDishyToDayClickListener) {
         this.mOnDishyToDayClickListener = mOnDishyToDayClickListener;
     }
 
-    public DishyTodayAdapter(Context mContext, List<Dishy> mDishyList) {
+    public DishyTodayAdapter(Context mContext, List<Recipe> mDishyList) {
         this.mContext = mContext;
         this.mDishyList = mDishyList;
     }
@@ -43,7 +44,7 @@ public class DishyTodayAdapter extends RecyclerView.Adapter<DishyTodayAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.mTxtName.setText(mDishyList.get(position).getName());
-        holder.mTxtTime.setText(String.valueOf((mDishyList.get(position).getNumberFavorite())) + " lượt thích");
+        holder.mTxtTime.setText(mDishyList.get(position).getTimeCook()+" phút");
         Picasso.Builder builder = new Picasso.Builder(mContext);
         builder.build().
                 load(mDishyList.get(position).getImage()).error(R.drawable.ic_launcher_foreground)

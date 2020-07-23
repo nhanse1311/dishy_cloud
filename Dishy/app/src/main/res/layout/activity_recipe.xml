@@ -143,6 +143,7 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/img_avatar_chef_ra"
+            android:visibility="gone"
             android:src="@mipmap/logo"
             android:scaleType="fitXY"
             android:layout_width="@dimen/dp50"
@@ -165,12 +166,13 @@
             <TextView
                 android:id="@+id/txt_name_chef_ra"
                 android:textStyle="bold"
-                android:textSize="@dimen/sp18"
+                android:textSize="@dimen/sp20"
                 android:text="@string/app_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
                 <LinearLayout
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <ImageView
@@ -190,6 +192,7 @@
             <TextView
                 android:id="@+id/txt_following_recipe_activity"
                 android:background="@drawable/custom_frame_input"
+                android:visibility="gone"
                 android:text="Theo dõi"
                 android:padding="@dimen/dp5"
                 android:layout_gravity="center"
@@ -325,6 +328,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_margin="@dimen/dp10"
             android:background="@drawable/custom_bottom_sheet"
             android:orientation="vertical">
@@ -421,6 +425,7 @@
            android:id="@+id/btn_do_recipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
             android:text="Thực hiện"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"

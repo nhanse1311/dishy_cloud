@@ -20,6 +20,7 @@ import com.example.dishycloud.adaptes.MaterialRecipeAdapter;
 import com.example.dishycloud.adaptes.StepMakeRecipeAdapter;
 import com.example.dishycloud.models.Dishy;
 import com.example.dishycloud.models.Material;
+import com.example.dishycloud.models.Recipe;
 import com.example.dishycloud.models.StepMake;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -47,7 +48,8 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     private Boolean checkLikeRecipe = false;
     private int numberCount;
     private int numberEater;
-    private Dishy dishy;
+    private String title;//value to know recipe get from where
+    private Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,53 +109,65 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         mImgFavorite.setOnClickListener(this);
         mBtnDoRecipe.setOnClickListener(this);
 
-        dishy = (Dishy) getIntent().getSerializableExtra("DISHY");
+        title = getIntent().getStringExtra("TITLE");
+        if (title.equals("ToDay")){
+            recipe = (Recipe) getIntent().getSerializableExtra("TODAY");
+        }else if (title.equals("Top")){
+            recipe = (Recipe) getIntent().getSerializableExtra("TOP");
+        }else if (title.equals("Follower")){
+            recipe = (Recipe) getIntent().getSerializableExtra("FOLLOWER");
+        }else if (title.equals("Follower")){
+            recipe = (Recipe) getIntent().getSerializableExtra("FOLLOWER");
+        }
+
+
 
         Picasso.Builder builder = new Picasso.Builder(RecipeActivity.this);
-        builder.build().load(dishy.getImage())
+        builder.build().load(recipe.getImage())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground).into(mImgAvatarRecipe);
 
-        if (dishy.getChef()!=null){
-            builder.build().load(dishy.getChef().getAvatar())
-                    .placeholder(R.drawable.ic_launcher_foreground)
-                    .error(R.drawable.ic_launcher_foreground).into(mImgChef);
-            mTxtNameChef.setText(dishy.getChef().getName());
-            mTxtNumberFavorite.setText(String.valueOf(dishy.getChef().getNumberLiker()));
-        }
+//        if (recipe.getCreateBy()!=null){
+//            builder.build().load(recipe.getCreateBy().getAvatar())
+//                    .placeholder(R.drawable.ic_launcher_foreground)
+//                    .error(R.drawable.ic_launcher_foreground).into(mImgChef);
+//            mTxtNameChef.setText(dishy.getChef().getName());
+//            mTxtNumberFavorite.setText(String.valueOf(dishy.getChef().getNumberLiker()));
+//        }
+//
+//        if (dishy.getStar() == 1) {
+//            mImgStar2.setVisibility(View.GONE);
+//            mImgStar3.setVisibility(View.GONE);
+//            mImgStar4.setVisibility(View.GONE);
+//            mImgStar5.setVisibility(View.GONE);
+//        } else if (dishy.getStar() == 2) {
+//            mImgStar3.setVisibility(View.GONE);
+//            mImgStar4.setVisibility(View.GONE);
+//            mImgStar5.setVisibility(View.GONE);
+//        } else if (dishy.getStar() == 3) {
+//            mImgStar4.setVisibility(View.GONE);
+//            mImgStar5.setVisibility(View.GONE);
+//        } else if (dishy.getStar() == 4) {
+//            mImgStar5.setVisibility(View.GONE);
+//        }
 
-        if (dishy.getStar() == 1) {
-            mImgStar2.setVisibility(View.GONE);
-            mImgStar3.setVisibility(View.GONE);
-            mImgStar4.setVisibility(View.GONE);
-            mImgStar5.setVisibility(View.GONE);
-        } else if (dishy.getStar() == 2) {
-            mImgStar3.setVisibility(View.GONE);
-            mImgStar4.setVisibility(View.GONE);
-            mImgStar5.setVisibility(View.GONE);
-        } else if (dishy.getStar() == 3) {
-            mImgStar4.setVisibility(View.GONE);
-            mImgStar5.setVisibility(View.GONE);
-        } else if (dishy.getStar() == 4) {
-            mImgStar5.setVisibility(View.GONE);
-        }
-
-        mTxtFavorite.setText(String.valueOf(dishy.getNumberFavorite()));
-        mTxtNameRecipe.setText(dishy.getName());
+        mTxtNameChef.setText(recipe.getCreateBy());
+        mTxtFavorite.setText(String.valueOf(recipe.getLiked()));
+        mTxtNameRecipe.setText(recipe.getName());
 
         mMaterials = new ArrayList<>();
-        mMaterials = dishy.getMaterials();
+        mMaterials = recipe.getMaterials();
 
-        numberEater = dishy.getEater();
+        numberEater = recipe.getNumberPeople();
         mTxtNumberCount.setText(String.valueOf(numberEater));
         numberCount = Integer.parseInt(mTxtNumberCount.getText().toString().trim());
 
         updateRcvMaterial(numberCount, numberEater);
         mStepMakes = new ArrayList<>();
-        mStepMakes = dishy.getMakes();
+        mStepMakes = recipe.getSteps();
         updateRcvStepMake();
 
-        mToolbar.setTitle(dishy.getName());
+        mToolbar.setTitle(recipe.getName());
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -243,8 +257,8 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.btn_do_recipe:
                 Intent intent  =new Intent(RecipeActivity.this,DoRecipeActivity.class);
-                intent.putExtra("NAME",dishy.getName());
-                intent.putExtra("STEP", (Serializable) dishy.getMakes());
+                intent.putExtra("NAME",recipe.getName());
+                intent.putExtra("STEP", (Serializable) recipe.getSteps());
                 startActivity(intent);
                 break;
         }

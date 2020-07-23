@@ -1,6 +1,8 @@
 package com.example.dishycloud.repositories;
 
+import com.example.dishycloud.models.Follower;
 import com.example.dishycloud.models.Recipe;
+import com.example.dishycloud.utils.CallBackData;
 import com.example.dishycloud.utils.ConfigAPI;
 
 import java.util.List;
@@ -44,4 +46,25 @@ public interface DishyService {
 
     @GET(ConfigAPI.Api.GET_RECIPE_AUTH)
     Call<ResponseBody> getRecipeSave(@Header("Authorization") String header);
+
+    @GET(ConfigAPI.Api.RECIPESUGGESTION)
+    Call<ResponseBody> getAllRecipeSuggestion(@Header("Authorization") String header);
+
+    @GET((ConfigAPI.Api.RECIPETOP))
+    Call<ResponseBody> getAllRecipeTop(@Header("Authorization") String header);
+
+    @GET((ConfigAPI.Api.RECIPEHISTORY))
+    Call<ResponseBody> getAllRecipeHistory(@Header("Authorization") String header);
+
+    @GET(ConfigAPI.Api.TOPCHEF)
+    Call<ResponseBody> getTopChef(@Header("Authorization") String header);
+
+    @GET((ConfigAPI.Api.FOLLOWER))
+    Call<ResponseBody> getFollower(@Header("Authorization") String header);
+
+    @POST(ConfigAPI.Api.ADFOLLOW)
+    Call<ResponseBody> addFollower(@Header("Authorization") String header, @Body Follower requestBody);
+    @POST(ConfigAPI.Api.UNFOLLOW)
+    Call<ResponseBody> unFollower(@Header("Authorization") String header, @Body Follower requestBody);
+
 }

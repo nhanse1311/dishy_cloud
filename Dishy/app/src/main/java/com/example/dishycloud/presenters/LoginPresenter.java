@@ -21,12 +21,16 @@ public class LoginPresenter {
         mDishyRepository = new DishyRepositoryImp();
     }
 
-    public void onLogin(String username, String password){
+    public void onLogin(final String username, String password){
         mDishyRepository.login(username, password, mContext, new CallBackData<User>() {
             @Override
             public void onSucess(User user) {
                 mDatabaseHelper = new DatabaseHelper(mContext);
-                mDatabaseHelper.addNote(user);
+                try{
+                    mDatabaseHelper.addNote(user, username);
+                }catch (Exception e){
+                    mLoginView.onLoginFail("Can't save token and username");
+                }
                 mLoginView.onLoginSuccess();
             }
 

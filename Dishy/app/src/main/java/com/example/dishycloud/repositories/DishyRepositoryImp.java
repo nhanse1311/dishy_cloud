@@ -2,9 +2,14 @@ package com.example.dishycloud.repositories;
 
 import android.content.Context;
 
+import com.example.dishycloud.models.Chef;
+import com.example.dishycloud.models.Follower;
 import com.example.dishycloud.models.Recipe;
 import com.example.dishycloud.models.ReponseData;
 import com.example.dishycloud.models.ResponseGet;
+
+import com.example.dishycloud.models.ResponseGetChef;
+
 import com.example.dishycloud.models.User;
 import com.example.dishycloud.utils.BaseUtils;
 import com.example.dishycloud.utils.CallBackData;
@@ -18,8 +23,13 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
+
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -80,24 +90,25 @@ public class DishyRepositoryImp implements DishyRepository{
     public void getUser(String token, final CallBackData<User> callBackData) {
         ClientApi clientApi = new ClientApi();
 
-        String header = "Bearer "+token;
+        String header = "Bearer " + token;
 
         Call<ResponseBody> bodyCall = clientApi.DishyService().getUser(header);
         bodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.code()==200){
+                if (response.code() == 200) {
                     try {
                         String result = response.body().string();
-                        Type type = new TypeToken<ReponseData<User>>(){}.getType();
-                        ReponseData<User> data = new Gson().fromJson(result,type);
+                        Type type = new TypeToken<ReponseData<User>>() {
+                        }.getType();
+                        ReponseData<User> data = new Gson().fromJson(result, type);
                         User user = data.getData();
-                        if (user!=null){
+                        if (user != null) {
                             callBackData.onSucess(user);
-                        }else{
+                        } else {
                             callBackData.onFail("Không có dữ liệu!");
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println("Lỗi quá trình parse dữ liệu");
                     }
                 }
@@ -109,6 +120,7 @@ public class DishyRepositoryImp implements DishyRepository{
             }
         });
     }
+
 
     @Override
     public void postRecipe(String token, Recipe recipe, final CallBackData<Recipe> callBackData) {
@@ -144,11 +156,14 @@ public class DishyRepositoryImp implements DishyRepository{
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
+                callBackData.onFail("Không thể tạo món ăn");
+
             }
         });
     }
 
     @Override
+
     public void register(final String username, final String password, final String fullname, Context context, final CallBackData<User> callBackData) {
         ClientApi clientApi = new ClientApi();
 
@@ -187,11 +202,7 @@ public class DishyRepositoryImp implements DishyRepository{
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
                 callBackData.onFail("4");
-
-                callBackData.onFail("Không thể đăng ký!");
-
             }
         });
     }
@@ -217,6 +228,7 @@ public class DishyRepositoryImp implements DishyRepository{
                 if (response.code() == 200) {
                     try {
                         String result = response.body().string();
+
                         Type type = new TypeToken<List<String>>() {
                         }.getType();
                         List<String> data = new Gson().fromJson(result, type);
@@ -240,28 +252,65 @@ public class DishyRepositoryImp implements DishyRepository{
         });
     }
 
+
+    public void getAllRecipeSuggestion(String token, final CallBackData<List<Recipe>> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        String header = "Bearer " + token;
+
+        Call<ResponseBody> bodyCall = clientApi.DishyService().getAllRecipeSuggestion(header);
+        bodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    try {
+                        String result = response.body().string();
+                        Type type = new TypeToken<ReponseData<ResponseGet>>() {
+                        }.getType();
+                        ReponseData<ResponseGet> data = new Gson().fromJson(result, type);
+                        List<Recipe> recipes = data.getData().getResults();
+                        if (data != null) {
+                            callBackData.onSucess(recipes);
+                        } else {
+                            callBackData.onFail("Không có dữ liệu!");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Lỗi quá trình parse dữ liệu!");
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("Không có thông tin về công thức");
+
+            }
+        });
+
+    }
+
     @Override
     public void getRecipeByAuth(Context context, String token, final CallBackData<List<Recipe>> callBackData) {
         ClientApi clientApi = new ClientApi();
 
-        String header = "Bearer "+token;
-
+        String header = "Bearer " + token;
         Call<ResponseBody> bodyCall = clientApi.DishyService().getRecipeByAuth(header);
         bodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.code()==200){
+                if (response.code() == 200) {
                     try {
                         String result = response.body().string();
-                        Type type = new TypeToken<ReponseData<ResponseGet>>(){}.getType();
-                        ReponseData<ResponseGet> data = new Gson().fromJson(result,type);
+                        Type type = new TypeToken<ReponseData<ResponseGet>>() {
+                        }.getType();
+                        ReponseData<ResponseGet> data = new Gson().fromJson(result, type);
                         List<Recipe> recipes = data.getData().getResults();
-                        if (data!=null){
+                        if (data != null) {
                             callBackData.onSucess(recipes);
-                        }else{
+                        } else {
                             callBackData.onFail("Không có dữ liệu!");
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println("Lỗi quá trình parse dữ liệu");
                     }
                 }
@@ -269,33 +318,139 @@ public class DishyRepositoryImp implements DishyRepository{
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                callBackData.onFail("Không thể lấy thông tin");
+
             }
         });
+
     }
 
     @Override
     public void getRecipeSave(Context context, String token, final CallBackData<List<Recipe>> callBackData) {
         ClientApi clientApi = new ClientApi();
 
-        String header = "Bearer "+token;
-
+        String header = "Bearer " + token;
         Call<ResponseBody> bodyCall = clientApi.DishyService().getRecipeSave(header);
         bodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.code()==200){
+                if (response.code() == 200) {
                     try {
                         String result = response.body().string();
-                        Type type = new TypeToken<ReponseData<ResponseGet>>(){}.getType();
-                        ReponseData<ResponseGet> data = new Gson().fromJson(result,type);
+                        Type type = new TypeToken<ReponseData<ResponseGet>>() {
+                        }.getType();
+                        ReponseData<ResponseGet> data = new Gson().fromJson(result, type);
                         List<Recipe> recipes = data.getData().getResults();
-                        if (data!=null){
+                        if (data != null) {
                             callBackData.onSucess(recipes);
-                        }else{
+                        } else {
                             callBackData.onFail("Không có dữ liệu!");
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
+                        System.out.println("Lỗi quá trình parse dữ liệu");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    @Override
+    public void getAllRecipeTop(String token, final CallBackData<List<Recipe>> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        String header = "Bearer " + token;
+
+        Call<ResponseBody> bodyCall = clientApi.DishyService().getAllRecipeTop(header);
+
+        bodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    try {
+                        String result = response.body().string();
+                        Type type = new TypeToken<ReponseData<ResponseGet>>() {
+                        }.getType();
+                        ReponseData<ResponseGet> data = new Gson().fromJson(result, type);
+                        List<Recipe> recipeList = data.getData().getResults();
+                        if (recipeList != null) {
+                            callBackData.onSucess(recipeList);
+                        } else {
+                            callBackData.onFail("Không có dữ liệu");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Lối trong quá trình parse dữ liệu");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("Không có thông tin về công thức");
+            }
+        });
+    }
+
+    @Override
+    public void getAllRecipeHistory(String token, final CallBackData<List<Recipe>> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        String header = "Bearer " + token;
+
+        Call<ResponseBody> bodyCall = clientApi.DishyService().getAllRecipeHistory(header);
+
+        bodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    try {
+                        String result = response.body().string();
+                        Type type = new TypeToken<ReponseData<ResponseGet>>() {
+                        }.getType();
+                        ReponseData<ResponseGet> data = new Gson().fromJson(result, type);
+                        List<Recipe> recipeList = data.getData().getResults();
+                        if (recipeList != null) {
+                            callBackData.onSucess(recipeList);
+                        } else {
+                            callBackData.onFail("Không có dữ liệu");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Lỗi trong quá trình parse dữ liệu");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    @Override
+    public void getTopChef(String token, final CallBackData<List<User>> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        String header = "Bearer " + token;
+
+        Call<ResponseBody> bodyCall = clientApi.DishyService().getTopChef(header);
+
+        bodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    try {
+                        String result = response.body().string();
+                        Type type = new TypeToken<ReponseData<ResponseGetChef>>() {
+                        }.getType();
+                        ReponseData<ResponseGetChef> data = new Gson().fromJson(result, type);
+                        List<User> chefList = data.getData().getResults();
+                        if (chefList != null) {
+                            callBackData.onSucess(chefList);
+                        } else {
+                            callBackData.onFail("Không có dữ liệu");
+                        }
+                    } catch (Exception e) {
                         System.out.println("Lỗi quá trình parse dữ liệu");
                     }
                 }
@@ -307,5 +462,117 @@ public class DishyRepositoryImp implements DishyRepository{
             }
         });
     }
+
+    @Override
+    public void getFollower(String token, final CallBackData<List<User>> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        String header = "Bearer " + token;
+
+        Call<ResponseBody> bodyCall = clientApi.DishyService().getFollower(header);
+
+        bodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    try {
+                        String result = response.body().string();
+                        Type type = new TypeToken<ReponseData<ResponseGetChef>>() {
+                        }.getType();
+                        ReponseData<ResponseGetChef> data = new Gson().fromJson(result, type);
+                        List<User> followerList = data.getData().getResults();
+                        if (followerList != null) {
+                            callBackData.onSucess(followerList);
+                        } else {
+                            callBackData.onFail("Không có dữ liệu");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Lỗi quá trình parse dữ liệu");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("Không thể lấy thông tin");
+            }
+        });
+    }
+
+    @Override
+    public void addFollow(String token, String username, String follower, final CallBackData<String> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        String header = "Bearer " + token;
+
+        Follower followerObject = new Follower(username, follower);
+        Call<ResponseBody> serviceCall = clientApi.DishyService().addFollower(header, followerObject);
+        serviceCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+//                    try {
+//                        String result = response.body().string();
+//                        Type type = new TypeToken<ReponseData<User>>() {
+//                        }.getType();
+//                        ReponseData<User> data = new Gson().fromJson(result, type);
+//                        User user = data.getData();
+//                        if (user != null) {
+                    callBackData.onSucess("Đã theo dõi");
+//                        } else {
+//                            callBackData.onFail("Không thể đăng ký!");
+//                        }}
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        callBackData.onFail("Không thể đăng ký!");
+//                    }
+
+//                }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("4");
+            }
+        });
+    }
+
+    @Override
+    public void unFollow(String token, String username, String follower, final CallBackData<String> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        String header = "Bearer " + token;
+
+        Follower followerObject = new Follower(username, follower);
+        Call<ResponseBody> serviceCall = clientApi.DishyService().unFollower(header, followerObject);
+        serviceCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+//                    try {
+//                        String result = response.body().string();
+//                        Type type = new TypeToken<ReponseData<User>>() {
+//                        }.getType();
+//                        ReponseData<User> data = new Gson().fromJson(result, type);
+//                        User user = data.getData();
+//                        if (user != null) {
+                    callBackData.onSucess("Đã huỷ theo dõi");
+//                        } else {
+//                            callBackData.onFail("Không thể đăng ký!");
+//                        }}
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        callBackData.onFail("Không thể đăng ký!");
+//                    }
+
+//                }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("4");
+            }
+        });
+    }
+
 }
 

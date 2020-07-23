@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.dishycloud.repositories.DishyRepository;
 import com.example.dishycloud.repositories.DishyRepositoryImp;
+import com.example.dishycloud.utils.CallBackData;
 import com.example.dishycloud.views.UnFollowerView;
 
 public class UnFollowerPresenter {
@@ -17,7 +18,17 @@ public class UnFollowerPresenter {
         this.mDishyRepository = new DishyRepositoryImp();
     }
 
-    public void unFollow(String token){
+    public void unFollow(String token, String username, String followe){
+        mDishyRepository.unFollow(token, username, followe, new CallBackData<String>() {
+            @Override
+            public void onSucess(String s) {
+                mUnFollowerView.onUnFollowSuccess();
+            }
 
+            @Override
+            public void onFail(String message) {
+                mUnFollowerView.onUnFollowFail(message);
+            }
+        });
     }
 }

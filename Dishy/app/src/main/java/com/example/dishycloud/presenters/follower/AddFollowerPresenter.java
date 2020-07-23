@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.dishycloud.repositories.DishyRepository;
 import com.example.dishycloud.repositories.DishyRepositoryImp;
+import com.example.dishycloud.utils.CallBackData;
 import com.example.dishycloud.views.AddFollowerView;
 
 public class AddFollowerPresenter {
@@ -17,7 +18,17 @@ public class AddFollowerPresenter {
         this.mDishyRepository = new DishyRepositoryImp();
     }
 
-    public void addFollower(String token){
-        
+    public void addFollower(String token, String usernmae, String follower){
+        mDishyRepository.addFollow(token, usernmae, follower, new CallBackData<String>() {
+            @Override
+            public void onSucess(String s) {
+                mAddFollowerView.onAddFollowerSuccess();
+            }
+
+            @Override
+            public void onFail(String message) {
+                mAddFollowerView.onAddFollowerFail(message);
+            }
+        });
     }
 }

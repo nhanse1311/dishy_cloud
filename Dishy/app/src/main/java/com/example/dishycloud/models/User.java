@@ -19,6 +19,7 @@ public class User implements Serializable {
     private int numberRecipe;
     @SerializedName("numberFollower")
     private int numberFollower;
+    private String username;
 
     public String getRoles() {
         return roles;
@@ -74,5 +75,13 @@ public class User implements Serializable {
 
     public void setNumberFollower(int numberFollower) {
         this.numberFollower = numberFollower;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
