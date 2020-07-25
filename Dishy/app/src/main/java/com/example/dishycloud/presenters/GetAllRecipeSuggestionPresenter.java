@@ -24,7 +24,7 @@ public class GetAllRecipeSuggestionPresenter {
 
             @Override
             public void onSucess(List<Recipe> listReponseData) {
-                mRecipeSuggestionView.onSuccess(listReponseData);
+                mRecipeSuggestionView.onRecipeSuggestionSuccess(listReponseData);
             }
 
             @Override

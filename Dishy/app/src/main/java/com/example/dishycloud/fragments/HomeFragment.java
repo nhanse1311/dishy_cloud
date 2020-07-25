@@ -190,14 +190,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onSuccess(List<Recipe> list) {
-        updateUIRcvDishyToDay(list);
-        updateUIRcvTopDishy(list);
+    public void onSuccessChef(List<User> chefList) {
+        updateUIRcvTopChef(chefList);
     }
 
     @Override
-    public void onSuccessChef(List<User> chefList) {
-        updateUIRcvTopChef(chefList);
+    public void onRecipeSuggestionSuccess(List<Recipe> recipeList) {
+        updateUIRcvDishyToDay(recipeList);
+    }
+
+    @Override
+    public void onRecipeTopSuccess(List<Recipe> recipeList) {
+        updateUIRcvTopDishy(recipeList);
     }
 
     @Override

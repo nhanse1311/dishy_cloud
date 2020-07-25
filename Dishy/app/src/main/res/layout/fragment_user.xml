@@ -185,17 +185,21 @@
                     android:textSize="@dimen/dp16"
                     android:textStyle="bold" />
 
-                <LinearLayout
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp15"
-                    android:orientation="horizontal">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rcv_follow"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp220"/>
-                </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp15"
+                        android:orientation="horizontal">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcv_follow"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"/>
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
             </LinearLayout>
 
             <LinearLayout

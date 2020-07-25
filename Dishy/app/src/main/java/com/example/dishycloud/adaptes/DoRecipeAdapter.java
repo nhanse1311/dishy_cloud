@@ -52,12 +52,13 @@ public class DoRecipeAdapter extends PagerAdapter {
                 .load(mStepMakes.get(position).getImage1())
                 .error(R.mipmap.logo).placeholder(R.mipmap.logo).into(mImgMain);
 
-        builder.build()
+        final Picasso.Builder builder1 = new Picasso.Builder(mContext);
+        builder1.build()
                 .load(mStepMakes.get(position).getImage1())
                 .error(R.mipmap.logo).placeholder(R.mipmap.logo).into(mImgDotOne);
 
-
-        builder.build()
+        final Picasso.Builder builder2 = new Picasso.Builder(mContext);
+        builder2.build()
                 .load(mStepMakes.get(position).getImage2())
                 .error(R.mipmap.logo).placeholder(R.mipmap.logo).into(mImgDotWto);
 

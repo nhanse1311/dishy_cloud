@@ -92,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp5"
                 android:layout_marginTop="@dimen/dp10"
+                android:visibility="gone"
                 android:layout_marginRight="@dimen/dp5"
                 android:background="@drawable/custom_bottom_sheet"
                 android:orientation="vertical"

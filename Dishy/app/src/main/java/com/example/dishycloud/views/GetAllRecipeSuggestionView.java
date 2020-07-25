@@ -5,6 +5,6 @@ import com.example.dishycloud.models.Recipe;
 import java.util.List;
 
 public interface GetAllRecipeSuggestionView<T> {
-    void onSuccess(List<Recipe> recipeList);
+    void onRecipeSuggestionSuccess(List<Recipe> recipeList);
     void onFail(String message);
 }

@@ -23,10 +23,12 @@ import com.example.dishycloud.models.Chef;
 import com.example.dishycloud.models.ChooseOptionBottomSheet;
 import com.example.dishycloud.models.Dishy;
 import com.example.dishycloud.models.User;
+import com.example.dishycloud.presenters.GetFollowerPresenter;
 import com.example.dishycloud.presenters.follower.AddFollowerPresenter;
 import com.example.dishycloud.presenters.follower.UnFollowerPresenter;
 import com.example.dishycloud.sqlites.DatabaseHelper;
 import com.example.dishycloud.views.AddFollowerView;
+import com.example.dishycloud.views.GetFollowerView;
 import com.example.dishycloud.views.UnFollowerView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -34,7 +36,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChefActivity extends AppCompatActivity implements View.OnClickListener, AddFollowerView, UnFollowerView {
+public class ChefActivity extends AppCompatActivity implements View.OnClickListener, AddFollowerView, UnFollowerView, GetFollowerView<User> {
     private LinearLayout mLLCoverWhite;
     private ImageView mImgCover, mImgButtonBack, mImgFillter, mImgAddFollower;
     private RoundedImageView mAvatar;
@@ -47,6 +49,8 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
     private AddFollowerPresenter mAddFollowerPresenter;
     private UnFollowerPresenter mUnFollowerPresenter;
     private DatabaseHelper mDatabaseHelper;
+    private GetFollowerPresenter mGetFollowerPresenter;
+    private String mUsername;
     private boolean mCheckFollow = false;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -91,6 +95,10 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
         if (intent != null) {
             mChef = (User) intent.getSerializableExtra("CHEF");
             updateUI(mChef);
+            mUsername = mChef.getUsername();
+            mGetFollowerPresenter = new GetFollowerPresenter(this);
+            mDatabaseHelper = new DatabaseHelper(this);
+            mGetFollowerPresenter.getFollower(mDatabaseHelper.getToken());
         }
 
         mImgButtonBack.setOnClickListener(this);
@@ -190,6 +198,25 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onUnFollowFail(String message) {
+
+    }
+
+    @Override
+    public void onSuccess(List<User> chefList) {
+        int exiested = 0;
+        for (int i = 0; i < chefList.size(); i++) {
+            if (chefList.get(i).getUsername().equals(mUsername)){
+                exiested++;
+            }
+        }
+        if (exiested>0){
+            mImgAddFollower.setImageResource(R.drawable.ic_check);
+            mCheckFollow = true;
+        }
+    }
+
+    @Override
+    public void onFail(String message) {
 
     }
 }
