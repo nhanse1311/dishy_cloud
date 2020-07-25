@@ -25,12 +25,16 @@ import com.example.dishycloud.models.Material;
 import com.example.dishycloud.models.Recipe;
 import com.example.dishycloud.models.StepMake;
 import com.example.dishycloud.models.User;
+import com.example.dishycloud.presenters.GetAllRecipeByUserPresenter;
 import com.example.dishycloud.presenters.GetAllRecipeSuggestionPresenter;
 import com.example.dishycloud.presenters.GetAllRecipeTopPresenter;
+import com.example.dishycloud.presenters.GetFollowerPresenter;
 import com.example.dishycloud.presenters.GetTopChefPresenter;
 import com.example.dishycloud.sqlites.DatabaseHelper;
+import com.example.dishycloud.views.GetAllRecipeByUserView;
 import com.example.dishycloud.views.GetAllRecipeSuggestionView;
 import com.example.dishycloud.views.GetAllRecipeTopView;
+import com.example.dishycloud.views.GetFollowerView;
 import com.example.dishycloud.views.GetTopChefView;
 
 import java.util.ArrayList;
@@ -40,7 +44,8 @@ import java.util.List;
 public class HomeFragment extends Fragment implements View.OnClickListener,
         GetAllRecipeSuggestionView<Recipe>,
         GetAllRecipeTopView<Recipe>,
-        GetTopChefView<User> {
+        GetTopChefView<User>,
+        GetAllRecipeByUserView<Recipe>{
 
     private RecyclerView mRcvDishyToday, mRcvTopDishy, mRcvTopChef, mRcvTopDishyFollow;
     private DishyTodayAdapter mDishyTodayAdapter;
@@ -52,6 +57,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
     private GetAllRecipeSuggestionPresenter getAllRecipeSuggestionPresenter;
     private GetAllRecipeTopPresenter getAllRecipeTopPresenter;
     private GetTopChefPresenter getTopChefPresenter;
+    private GetAllRecipeByUserPresenter getAllRecipeByUserPresenter;
+    private GetFollowerPresenter getFollowerPresenter;
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -103,25 +110,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         //list recipe top
         getAllRecipeTopPresenter = new GetAllRecipeTopPresenter(this);
         getAllRecipeTopPresenter.getAllRecipeTop(mDatabaseHelper.getToken());
+        //list recipe by user
+        getAllRecipeByUserPresenter = new GetAllRecipeByUserPresenter(this);
+        getAllRecipeByUserPresenter.getAllRecipeByUser(mDatabaseHelper.getToken(),mDatabaseHelper.getUsername());
         //list chef top
         getTopChefPresenter =new GetTopChefPresenter(this);
         getTopChefPresenter.getTopChef(mDatabaseHelper.getToken());
 
 
-
     }
 
 
-    private void updateUIRcvDishyFollow(List<Dishy> followList){
+    private void updateUIRcvDishyFollow(List<Recipe> followList){
         if (mTopFollowAdapter == null) {
             mTopFollowAdapter = new TopFollowAdapter(getContext(), followList);
             mRcvTopDishyFollow.setAdapter(mTopFollowAdapter);
             mTopFollowAdapter.setmOnDishyFollowClickListener(new TopFollowAdapter.OnDishyFollowClickListener() {
                 @Override
-                public void onClick(Dishy dishy) {
+                public void onClick(Recipe recipe) {
                     Intent intent = new Intent(getContext(), RecipeActivity.class);
                     intent.putExtra("TITLE","Follower");
-                    intent.putExtra("FOLLOWER",dishy);
+                    intent.putExtra("FOLLOWER",recipe);
                     startActivity(intent);
                 }
             });
@@ -193,6 +202,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
     public void onSuccess(List<Recipe> list) {
         updateUIRcvDishyToDay(list);
         updateUIRcvTopDishy(list);
+        updateUIRcvDishyFollow(list);
     }
 
     @Override

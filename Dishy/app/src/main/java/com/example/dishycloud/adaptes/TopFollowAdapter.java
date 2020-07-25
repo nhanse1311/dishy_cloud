@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dishycloud.R;
 import com.example.dishycloud.models.Dishy;
+import com.example.dishycloud.models.Recipe;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -20,20 +21,20 @@ import java.util.List;
 public class TopFollowAdapter extends RecyclerView.Adapter<TopFollowAdapter.ViewHolder>{
 
     public interface OnDishyFollowClickListener{
-        void onClick(Dishy dishy);
+        void onClick(Recipe recipe);
     }
 
     private Context mContext;
-    private List<Dishy> mDishyList;
+    private List<Recipe> mRecipeList;
     private OnDishyFollowClickListener mOnDishyFollowClickListener;
 
     public void setmOnDishyFollowClickListener(OnDishyFollowClickListener mOnDishyFollowClickListener){
         this.mOnDishyFollowClickListener = mOnDishyFollowClickListener;
     }
 
-    public TopFollowAdapter(Context mContext, List<Dishy> mDishyList){
+    public TopFollowAdapter(Context mContext, List<Recipe> mRecipeList){
         this.mContext = mContext;
-        this.mDishyList = mDishyList;
+        this.mRecipeList = mRecipeList;
     }
 
     @NonNull
@@ -46,30 +47,28 @@ public class TopFollowAdapter extends RecyclerView.Adapter<TopFollowAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.mTxtName.setText(mDishyList.get(position).getName());
-        holder.mTxtTime.setText(mDishyList.get(position).getTime());
-        holder.mTxtUsername.setText(mDishyList.get(position).getChef().getName());
+        holder.mTxtName.setText(mRecipeList.get(position).getName());
 
         Picasso.Builder builder = new Picasso.Builder(mContext);
         builder.build().
-                load(mDishyList.get(position).getImage()).error(R.drawable.ic_launcher_foreground)
+                load(mRecipeList.get(position).getImage()).error(R.drawable.ic_launcher_foreground)
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.mImgFood);
         builder.build().
-                load(mDishyList.get(position).getChef().getAvatar()).error(R.drawable.ic_launcher_foreground)
+                load(mRecipeList.get(position).getImage()).error(R.drawable.ic_launcher_foreground)
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.mImgAvatar);
         holder.mImgFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnDishyFollowClickListener.onClick(mDishyList.get(position));
+                mOnDishyFollowClickListener.onClick(mRecipeList.get(position));
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mDishyList != null ? mDishyList.size() : 0;
+        return mRecipeList != null ? mRecipeList.size() : 0;
     }
 
     protected class ViewHolder extends RecyclerView.ViewHolder{

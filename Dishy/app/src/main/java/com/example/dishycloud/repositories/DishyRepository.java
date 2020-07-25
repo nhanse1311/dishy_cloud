@@ -15,15 +15,12 @@ public interface DishyRepository {
 
     void login(String username, String password, Context context, CallBackData<User> callBackData);
 
-
-
     void postRecipe(String token,Recipe recipe, CallBackData<Recipe> callBackData);
     void register(String username, String password, String fullname, Context context, CallBackData<User> callBackData);
 
     void postImage(Context context,String token,List<String> imagePath ,CallBackData<List<String>> callBackData);
     void getRecipeByAuth(Context context, String token, CallBackData<List<Recipe>> callBackData);
     void getRecipeSave(Context context, String token, CallBackData<List<Recipe>> callBackData);
-
 
     void getUser(String token, CallBackData<User> callBackData);
 
@@ -33,6 +30,8 @@ public interface DishyRepository {
 
     void getAllRecipeHistory(String token, CallBackData<List<Recipe>> callBackData);
 
+    void getAllRecipeByUser(String token, String username, CallBackData<List<Recipe>> callBackData);
+
     void getTopChef(String token, CallBackData<List<User>> callBackData);
 
     void getFollower(String token, CallBackData<List<User>> callBackData);
@@ -40,4 +39,6 @@ public interface DishyRepository {
     void addFollow(String token,String username,String follower, CallBackData<String> callBackData);
 
     void unFollow(String token,String username, String follower, CallBackData<String> callBackData);
+
+    void saveRecipe(String token, String id, CallBackData<Recipe> callBackData);
 }

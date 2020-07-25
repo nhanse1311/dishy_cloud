@@ -62,6 +62,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return  username;
     }
+    public String getUserId(){
+        String userId = "";
+        String selectQuery = "SELECT "+USER_ID+" FROM " + TABLE_USER;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if(cursor.moveToFirst()){
+            do{
+                userId = cursor.getString(0);
+            }while (cursor.moveToNext());
+        }
+        return userId;
+    }
 
     public String getToken() {
         // Select All Query
