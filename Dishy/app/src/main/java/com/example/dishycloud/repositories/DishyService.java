@@ -2,6 +2,7 @@ package com.example.dishycloud.repositories;
 
 import com.example.dishycloud.models.Follower;
 import com.example.dishycloud.models.Recipe;
+import com.example.dishycloud.models.User;
 import com.example.dishycloud.utils.CallBackData;
 import com.example.dishycloud.utils.ConfigAPI;
 
@@ -18,6 +19,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -44,11 +46,14 @@ public interface DishyService {
     @GET(ConfigAPI.Api.GET_RECIPE_AUTH)
     Call<ResponseBody> getRecipeByAuth(@Header("Authorization") String header);
 
-    @GET(ConfigAPI.Api.GET_RECIPE_AUTH)
+    @GET(ConfigAPI.Api.GET_RECIPE_SAVE)
     Call<ResponseBody> getRecipeSave(@Header("Authorization") String header);
 
     @GET(ConfigAPI.Api.RECIPESUGGESTION)
     Call<ResponseBody> getAllRecipeSuggestion(@Header("Authorization") String header);
+
+    @GET((ConfigAPI.Api.GET_RECIPE_BY_USER))
+    Call<ResponseBody> getAllRecipebyUser(@Header("Authorization") String header, @Path("username") String username);
 
     @GET((ConfigAPI.Api.RECIPETOP))
     Call<ResponseBody> getAllRecipeTop(@Header("Authorization") String header);
@@ -64,7 +69,11 @@ public interface DishyService {
 
     @POST(ConfigAPI.Api.ADFOLLOW)
     Call<ResponseBody> addFollower(@Header("Authorization") String header, @Body Follower requestBody);
+
     @POST(ConfigAPI.Api.UNFOLLOW)
     Call<ResponseBody> unFollower(@Header("Authorization") String header, @Body Follower requestBody);
+
+    @PUT((ConfigAPI.Api.SAVE_RECIPE))
+    Call<ResponseBody> saveRecipe(@Header("Authorization") String header,@Query("id") String id);
 
 }

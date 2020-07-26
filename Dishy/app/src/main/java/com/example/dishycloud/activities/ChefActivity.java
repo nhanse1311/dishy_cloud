@@ -22,12 +22,15 @@ import com.example.dishycloud.bottomSheets.CallBackOption;
 import com.example.dishycloud.models.Chef;
 import com.example.dishycloud.models.ChooseOptionBottomSheet;
 import com.example.dishycloud.models.Dishy;
+import com.example.dishycloud.models.Recipe;
 import com.example.dishycloud.models.User;
+import com.example.dishycloud.presenters.GetAllRecipeByUserPresenter;
 import com.example.dishycloud.presenters.GetFollowerPresenter;
 import com.example.dishycloud.presenters.follower.AddFollowerPresenter;
 import com.example.dishycloud.presenters.follower.UnFollowerPresenter;
 import com.example.dishycloud.sqlites.DatabaseHelper;
 import com.example.dishycloud.views.AddFollowerView;
+import com.example.dishycloud.views.GetAllRecipeByUserView;
 import com.example.dishycloud.views.GetFollowerView;
 import com.example.dishycloud.views.UnFollowerView;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -36,7 +39,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChefActivity extends AppCompatActivity implements View.OnClickListener, AddFollowerView, UnFollowerView, GetFollowerView<User> {
+public class ChefActivity extends AppCompatActivity implements View.OnClickListener, AddFollowerView, UnFollowerView, GetFollowerView<User>, GetAllRecipeByUserView {
     private LinearLayout mLLCoverWhite;
     private ImageView mImgCover, mImgButtonBack, mImgFillter, mImgAddFollower;
     private RoundedImageView mAvatar;
@@ -50,6 +53,7 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
     private UnFollowerPresenter mUnFollowerPresenter;
     private DatabaseHelper mDatabaseHelper;
     private GetFollowerPresenter mGetFollowerPresenter;
+    private GetAllRecipeByUserPresenter mGetAllRecipeByUserPresenter;
     private String mUsername;
     private boolean mCheckFollow = false;
 
@@ -118,6 +122,8 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
         mAddFollowerPresenter = new AddFollowerPresenter(this, this);
         mUnFollowerPresenter = new UnFollowerPresenter(this, this);
         mDatabaseHelper = new DatabaseHelper(this);
+        mGetAllRecipeByUserPresenter =new GetAllRecipeByUserPresenter(this);
+        mGetAllRecipeByUserPresenter.getAllRecipeByUser(mDatabaseHelper.getToken(), mUsername);
     }
 
     private void updateUI(User chef) {
@@ -135,10 +141,19 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
 //        updateRcvRecipeOfChef(chef.getDishyList());
     }
 
-    private void updateRcvRecipeOfChef(List<Dishy> dishies) {
+    private void updateRcvRecipeOfChef(List<Recipe> dishies) {
         if (mRecipeOfChefAdapter == null) {
             mRecipeOfChefAdapter = new RecipeOfChefAdapter(ChefActivity.this, dishies);
             mRcvRecipe.setAdapter(mRecipeOfChefAdapter);
+            mRecipeOfChefAdapter.setmOnRecipeOfChefClickListener(new RecipeOfChefAdapter.OnRecipeOfChefClickListener() {
+                @Override
+                public void onClick(Recipe recipe) {
+                    Intent intent = new Intent(getApplicationContext(), RecipeActivity.class);
+                    intent.putExtra("TITLE","RecipeChef");
+                    intent.putExtra("RECIPECHEF",recipe);
+                    startActivity(intent);
+                }
+            });
         } else {
             mRecipeOfChefAdapter.notifyDataSetChanged();
         }
@@ -217,6 +232,16 @@ public class ChefActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onFail(String message) {
+
+    }
+
+    @Override
+    public void onSuccessByUser(List<Recipe> recipeList) {
+        updateRcvRecipeOfChef(recipeList);
+    }
+
+    @Override
+    public void onFailByUser(String message) {
 
     }
 }

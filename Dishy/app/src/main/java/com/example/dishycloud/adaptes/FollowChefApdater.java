@@ -20,7 +20,7 @@ import java.util.List;
 
 public class FollowChefApdater extends RecyclerView.Adapter<FollowChefApdater.ViewHolder> {
     public interface  OnFollowChefClickListener{
-        void onClick(Chef chef);
+        void onClick(User chef);
     }
     private Context mContext;
     private List<User> mChefs;
@@ -53,9 +53,13 @@ public class FollowChefApdater extends RecyclerView.Adapter<FollowChefApdater.Vi
         holder.mTxtName.setText(mChefs.get(position).getFullname());
         holder.mTxtNumberRecipe.setText(mChefs.get(position).getNumberRecipe() + " công thức");
         holder.mTxtNumberPeopleLike.setText(mChefs.get(position).getNumberFollower()+ " người theo dõi");
-
         holder.mTxtPositionChefFollow.setText(String.valueOf(position + 1));
-
+        holder.mLLRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnFollowChefClickListener.onClick(mChefs.get(position));
+            }
+        });
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,6 +23,9 @@ import com.example.dishycloud.models.Dishy;
 import com.example.dishycloud.models.Material;
 import com.example.dishycloud.models.Recipe;
 import com.example.dishycloud.models.StepMake;
+import com.example.dishycloud.presenters.SaveRecipePresenter;
+import com.example.dishycloud.sqlites.DatabaseHelper;
+import com.example.dishycloud.views.SaveRecipeView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -29,10 +33,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView mTxtNumberCount, mTxtNameRecipe, mTxtNameChef, mTxtNumberFavorite, mTxtFollowing, mTxtFavorite;
+public class RecipeActivity extends AppCompatActivity implements View.OnClickListener, SaveRecipeView {
+    private TextView mTxtNumberCount, mTxtNameRecipe, mTxtNameChef, mTxtNumberFavorite, mTxtFollowing, mTxtFavorite, mTxtSaveRecipe;
     private Button mBtnDiv, mBtnSum, mBtnDoRecipe;
-    private ImageView mImgAvatarRecipe, mImgFavorite, mImgSave, mImgBack,mImgChef;
+    private ImageView mImgAvatarRecipe, mImgFavorite, mImgSave, mImgBack, mImgChef;
     private ImageView mImgStar1, mImgStar2, mImgStar3, mImgStar4, mImgStar5;
     private RoundedImageView mImgAvatarChef;
     private LinearLayout mLLChef;
@@ -50,6 +54,8 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     private int numberEater;
     private String title;//value to know recipe get from where
     private Recipe recipe;
+    private DatabaseHelper mDatabaseHelper;
+    private SaveRecipePresenter mSaveRecipePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,27 +105,33 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         mImgStar4 = findViewById(R.id.img_star_recipe_4);
         mImgStar5 = findViewById(R.id.img_star_recipe_5);
         mBtnDoRecipe = findViewById(R.id.btn_do_recipe);
+        mTxtSaveRecipe = findViewById(R.id.txt_name_save_recipe);
     }
 
     private void initData() {
+
+        mImgSave.setOnClickListener(this);
         mBtnDiv.setOnClickListener(this);
         mBtnSum.setOnClickListener(this);
         mImgBack.setOnClickListener(this);
         mTxtFollowing.setOnClickListener(this);
         mImgFavorite.setOnClickListener(this);
         mBtnDoRecipe.setOnClickListener(this);
-
+        mTxtSaveRecipe.setOnClickListener(this);
         title = getIntent().getStringExtra("TITLE");
-        if (title.equals("ToDay")){
+        if (title.equals("ToDay")) {
             recipe = (Recipe) getIntent().getSerializableExtra("TODAY");
-        }else if (title.equals("Top")){
+        } else if (title.equals("Top")) {
             recipe = (Recipe) getIntent().getSerializableExtra("TOP");
-        }else if (title.equals("Follower")){
+        } else if (title.equals("Follower")) {
             recipe = (Recipe) getIntent().getSerializableExtra("FOLLOWER");
-        }else if (title.equals("Follower")){
+        } else if (title.equals("Follower")) {
             recipe = (Recipe) getIntent().getSerializableExtra("FOLLOWER");
+        }else if (title.equals("RecipeChef")) {
+            recipe = (Recipe) getIntent().getSerializableExtra("RECIPECHEF");
         }
 
+        //Save Recipe
 
 
         Picasso.Builder builder = new Picasso.Builder(RecipeActivity.this);
@@ -256,11 +268,32 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.btn_do_recipe:
-                Intent intent  =new Intent(RecipeActivity.this,DoRecipeActivity.class);
-                intent.putExtra("NAME",recipe.getName());
+                Intent intent = new Intent(RecipeActivity.this, DoRecipeActivity.class);
+                intent.putExtra("NAME", recipe.getName());
                 intent.putExtra("STEP", (Serializable) recipe.getSteps());
                 startActivity(intent);
                 break;
+            case R.id.txt_name_save_recipe:
+                saveRecipe();
+                break;
+
         }
+    }
+
+    private void saveRecipe() {
+        mDatabaseHelper = new DatabaseHelper(getApplicationContext());
+        mSaveRecipePresenter = new SaveRecipePresenter(this);
+        mSaveRecipePresenter.saveRecipe(mDatabaseHelper.getToken(), mDatabaseHelper.getUserId());
+    }
+
+    @Override
+    public void onPutRecipeSuccess(Recipe recipe) {
+        Toast.makeText(this, "Tải về thành công", Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void onPutRecipeFail(String fail) {
+        Toast.makeText(this, "Tải về không thành công", Toast.LENGTH_LONG).show();
     }
 }

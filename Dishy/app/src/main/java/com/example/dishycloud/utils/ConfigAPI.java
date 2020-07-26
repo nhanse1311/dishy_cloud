@@ -16,7 +16,7 @@ public class ConfigAPI {
         String IMAGE = "image/";
         String GET_RECIPE_AUTH ="Recipe/getAllRecipebByAuthor";
         String GET_RECIPE_SAVE ="Recipe/getAllRecipebSaved";
-
+        String GET_RECIPE_BY_USER = "Recipe/getAllRecipebByUser{username}";
         String RECIPESUGGESTION = "Recipe/getAllRecipeSuggestion";
         String RECIPETOP = "Recipe/getAllRecipeTop";
         String RECIPEHISTORY = "Recipe/getAllRecipeHistory";
@@ -25,6 +25,7 @@ public class ConfigAPI {
         String ADFOLLOW ="Follower/follow";
         String UNFOLLOW = "Follower/unfollow";
 
+        String SAVE_RECIPE = "Recipe";
     }
 
 }

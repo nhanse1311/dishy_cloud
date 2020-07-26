@@ -12,15 +12,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dishycloud.R;
 import com.example.dishycloud.models.Dishy;
+import com.example.dishycloud.models.Recipe;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class RecipeOfChefAdapter extends RecyclerView.Adapter<RecipeOfChefAdapter.ViewHolder> {
-    private Context mContext;
-    private List<Dishy> mDishyList;
+    public interface OnRecipeOfChefClickListener{
+        void onClick(Recipe recipe);
+    }
 
-    public RecipeOfChefAdapter(Context mContext, List<Dishy> mDishyList) {
+    private Context mContext;
+    private List<Recipe> mDishyList;
+    private OnRecipeOfChefClickListener mOnRecipeOfChefClickListener;
+
+    public void setmOnRecipeOfChefClickListener(OnRecipeOfChefClickListener mOnRecipeOfChefClickListener) {
+        this.mOnRecipeOfChefClickListener = mOnRecipeOfChefClickListener;
+    }
+
+    public RecipeOfChefAdapter(Context mContext, List<Recipe> mDishyList) {
         this.mContext = mContext;
         this.mDishyList = mDishyList;
     }
@@ -34,7 +44,7 @@ public class RecipeOfChefAdapter extends RecyclerView.Adapter<RecipeOfChefAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.mtxtOrder.setText(String.valueOf(position+1));
         holder.mtxtName.setText(mDishyList.get(position).getName());
 
@@ -42,6 +52,13 @@ public class RecipeOfChefAdapter extends RecyclerView.Adapter<RecipeOfChefAdapte
         builder.build()
                 .load(mDishyList.get(position).getImage()).error(R.drawable.ic_launcher_foreground).placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.mImgRecipe);
+
+        holder.mImgRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnRecipeOfChefClickListener.onClick(mDishyList.get(position));
+            }
+        });
     }
 
     @Override

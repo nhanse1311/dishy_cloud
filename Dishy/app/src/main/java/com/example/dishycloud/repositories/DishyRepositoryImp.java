@@ -429,6 +429,38 @@ public class DishyRepositoryImp implements DishyRepository{
     }
 
     @Override
+    public void getAllRecipeByUser(String token, String username, final CallBackData<List<Recipe>> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        String header = "Bearer " + token;
+        Call<ResponseBody> bodyCall = clientApi.DishyService().getAllRecipebyUser(header, username);
+        bodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.code() == 200){
+                    try{
+                        String result = response.body().string();
+                        Type type = new TypeToken<ReponseData<ResponseGet>>(){}.getType();
+                        ReponseData<ResponseGet> data = new Gson().fromJson(result, type);
+                        List<Recipe> recipeList = data.getData().getResults();
+                        if(data != null){
+                            callBackData.onSucess(recipeList);
+                        }else {
+                            callBackData.onFail("Không có dữ liệu");
+                        }
+                    }catch (Exception e){
+                        System.out.println("Lỗi quá trình parse dữ liệu");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("Không có thông tin");
+            }
+        });
+    }
+
+    @Override
     public void getTopChef(String token, final CallBackData<List<User>> callBackData) {
         ClientApi clientApi = new ClientApi();
         String header = "Bearer " + token;
@@ -570,6 +602,39 @@ public class DishyRepositoryImp implements DishyRepository{
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 callBackData.onFail("4");
+            }
+        });
+    }
+
+    @Override
+    public void saveRecipe(String token, final String id, final CallBackData<Recipe> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        String header = "Bearer " + token;
+
+        Call<ResponseBody> bodyCall =clientApi.DishyService().saveRecipe(header,id);
+        bodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.code() == 200){
+                    try{
+                        String result = response.body().string();
+                        Type type = new TypeToken<Recipe>(){}.getType();
+                        ReponseData<Recipe> data = new Gson().fromJson(result, type);
+                        Recipe recipeData = data.getData();
+                        if(data != null){
+                            callBackData.onSucess(recipeData);
+                        }else {
+                            callBackData.onFail("Không có dữ liệu");
+                        }
+                    }catch (Exception e){
+                        System.out.println("Lỗi quá trình parse dữ liệu");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("Không có thông tin");
             }
         });
     }

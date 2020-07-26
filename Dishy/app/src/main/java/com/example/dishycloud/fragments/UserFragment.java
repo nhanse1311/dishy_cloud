@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dishycloud.R;
+import com.example.dishycloud.activities.ChefActivity;
 import com.example.dishycloud.activities.EditAccountActivity;
 import com.example.dishycloud.activities.HomeActivity;
 import com.example.dishycloud.activities.SignInActivity;
@@ -116,6 +117,14 @@ public class UserFragment extends Fragment implements View.OnClickListener, GetI
         if (mFollowAdapter == null) {
             mFollowAdapter = new FollowChefApdater(getContext(), listUser);
             mRecycleView.setAdapter(mFollowAdapter);
+            mFollowAdapter.setmOnFollowChefClickListener(new FollowChefApdater.OnFollowChefClickListener() {
+                @Override
+                public void onClick(User chef) {
+                    Intent intent = new Intent(getContext(), ChefActivity.class);
+                    intent.putExtra("CHEF",chef);
+                    startActivity(intent);
+                }
+            });
         } else {
             mFollowAdapter.notifyDataSetChanged();
         }
