@@ -9,11 +9,11 @@ import com.example.dishycloud.views.GetAllRecipeSuggestionView;
 import java.util.List;
 
 public class GetAllRecipeTopPresenter {
-    private GetAllRecipeSuggestionView<Recipe> mRecipeTopView;
+    private GetAllRecipeSuggestionView<Recipe> mGetAllRecipeSuggestionView;
     private DishyRepository mDishyRepository;
 
     public GetAllRecipeTopPresenter(GetAllRecipeSuggestionView<Recipe> mRecipeTopView) {
-        this.mRecipeTopView = mRecipeTopView;
+        this.mGetAllRecipeSuggestionView = mRecipeTopView;
         this.mDishyRepository = new DishyRepositoryImp();
     }
 
@@ -21,12 +21,12 @@ public class GetAllRecipeTopPresenter {
         mDishyRepository.getAllRecipeTop(token, new CallBackData<List<Recipe>>() {
             @Override
             public void onSucess(List<Recipe> recipeList) {
-                mRecipeTopView.onSuccess(recipeList);
+                mGetAllRecipeSuggestionView.onRecipeSuggestionSuccess(recipeList);
             }
 
             @Override
             public void onFail(String message) {
-                mRecipeTopView.onFail(message);
+                mGetAllRecipeSuggestionView.onFail(message);
             }
         });
     }

@@ -17,11 +17,11 @@
         android:layout_height="wrap_content">
         <FrameLayout
             android:layout_marginRight="@dimen/dp5"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/img_dot_one"
-                android:src="@drawable/img_check"
                 android:scaleType="fitXY"
                 android:padding="1.3dp"
                 android:layout_width="@dimen/dp50"
@@ -34,11 +34,11 @@
 
         <FrameLayout
             android:layout_marginLeft="@dimen/dp5"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/img_dot_wto"
-                android:src="@drawable/img_check"
                 android:scaleType="fitXY"
                 android:padding="1.3dp"
                 android:layout_width="@dimen/dp50"
