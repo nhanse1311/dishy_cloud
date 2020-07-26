@@ -74,6 +74,6 @@ public interface DishyService {
     Call<ResponseBody> unFollower(@Header("Authorization") String header, @Body Follower requestBody);
 
     @PUT((ConfigAPI.Api.SAVE_RECIPE))
-    Call<ResponseBody> saveRecipe(@Header("Authorization") String header,@Query("id") String id);
+    Call<ResponseBody> saveRecipe(@Header("Authorization") String header, @Path("id") String id);
 
 }

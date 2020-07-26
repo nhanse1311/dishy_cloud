@@ -53,6 +53,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     private int numberCount;
     private int numberEater;
     private String title;//value to know recipe get from where
+    private String id;
     private Recipe recipe;
     private DatabaseHelper mDatabaseHelper;
     private SaveRecipePresenter mSaveRecipePresenter;
@@ -118,6 +119,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
         mImgFavorite.setOnClickListener(this);
         mBtnDoRecipe.setOnClickListener(this);
         mTxtSaveRecipe.setOnClickListener(this);
+        id = getIntent().getStringExtra("id");
         title = getIntent().getStringExtra("TITLE");
         if (title.equals("ToDay")) {
             recipe = (Recipe) getIntent().getSerializableExtra("TODAY");
@@ -131,7 +133,6 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
             recipe = (Recipe) getIntent().getSerializableExtra("RECIPECHEF");
         }
 
-        //Save Recipe
 
 
         Picasso.Builder builder = new Picasso.Builder(RecipeActivity.this);
@@ -283,7 +284,8 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     private void saveRecipe() {
         mDatabaseHelper = new DatabaseHelper(getApplicationContext());
         mSaveRecipePresenter = new SaveRecipePresenter(this);
-        mSaveRecipePresenter.saveRecipe(mDatabaseHelper.getToken(), mDatabaseHelper.getUserId());
+        mSaveRecipePresenter.saveRecipe(mDatabaseHelper.getToken(), recipe.getId());
+        Toast.makeText(this, "Tải về thành công", Toast.LENGTH_LONG).show();
     }
 
     @Override

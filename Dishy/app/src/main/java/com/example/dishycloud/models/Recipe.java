@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Recipe implements Serializable {
+    @SerializedName("id")
+    private String id;
     @SerializedName("name")
     private String name;
     @SerializedName("description")
@@ -31,6 +33,22 @@ public class Recipe implements Serializable {
 
     private String imagePath;
 
+
+    public Recipe(String id, String name, String description, String image, int timeCook, int levelRecipe, int numberPeople, int liked, int disliked, String createBy, List<Material> materials, List<StepMake> steps) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.timeCook = timeCook;
+        this.levelRecipe = levelRecipe;
+        this.numberPeople = numberPeople;
+        this.liked = liked;
+        this.disliked = disliked;
+        this.createBy = createBy;
+        this.materials = materials;
+        this.steps = steps;
+    }
+
     public Recipe(String name, String description, String image, int timeCook, int levelRecipe, int numberPeople, List<Material> materials, List<StepMake> steps) {
         this.name = name;
         this.description = description;
@@ -51,7 +69,13 @@ public class Recipe implements Serializable {
         this.levelRecipe = levelRecipe;
         this.numberPeople = numberPeople;
     }
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
     public String getName() {
         return name;
     }

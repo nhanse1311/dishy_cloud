@@ -21,7 +21,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String USER_ID = "id";
     private static final String TOKEN = "access_token";
     private static final String USERNAME = "username";
-
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -61,19 +60,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }while (cursor.moveToNext());
         }
         return  username;
-    }
-    public String getUserId(){
-        String userId = "";
-        String selectQuery = "SELECT "+USER_ID+" FROM " + TABLE_USER;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if(cursor.moveToFirst()){
-            do{
-                userId = cursor.getString(0);
-            }while (cursor.moveToNext());
-        }
-        return userId;
     }
 
     public String getToken() {
