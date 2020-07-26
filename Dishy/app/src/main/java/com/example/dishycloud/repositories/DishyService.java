@@ -76,4 +76,9 @@ public interface DishyService {
     @PUT((ConfigAPI.Api.SAVE_RECIPE))
     Call<ResponseBody> saveRecipe(@Header("Authorization") String header,@Query("id") String id);
 
+    @PUT(ConfigAPI.Api.DO_RECIPE)
+    Call<ResponseBody> doRecipe(@Header("Authorization") String header, @Path("id") String id);
+
+    @PUT(ConfigAPI.Api.LIKE_RECIPE)
+    Call<ResponseBody> likeRecipe(@Header("Authorization") String header, @Path("id") String id);
 }

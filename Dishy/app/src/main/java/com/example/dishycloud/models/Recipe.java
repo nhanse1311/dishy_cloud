@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Recipe implements Serializable {
+    @SerializedName("id")
+    private String id;
     @SerializedName("name")
     private String name;
     @SerializedName("description")
@@ -146,5 +148,13 @@ public class Recipe implements Serializable {
 
     public void setCreateBy(String createBy) {
         this.createBy = createBy;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

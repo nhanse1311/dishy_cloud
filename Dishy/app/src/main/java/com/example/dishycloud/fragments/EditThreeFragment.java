@@ -1,15 +1,19 @@
 package com.example.dishycloud.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +31,7 @@ import android.widget.ImageView;
 import com.example.dishycloud.R;
 import com.example.dishycloud.adaptes.StepMakeAdapter;
 import com.example.dishycloud.models.Dishy;
+import com.example.dishycloud.models.Recipe;
 import com.example.dishycloud.models.StepMake;
 import com.squareup.picasso.Picasso;
 
@@ -124,32 +129,47 @@ public class EditThreeFragment extends Fragment implements View.OnClickListener 
         mRcvStepMake.setVisibility(View.VISIBLE);
 
         Intent intent = getActivity().getIntent();
-        Dishy dishy = (Dishy) intent.getSerializableExtra("EDIT");
+        Recipe dishy = (Recipe) intent.getSerializableExtra("EDIT");
         mStepMakes = new ArrayList<>();
-        for (int i = 0; i < dishy.getMakes().size(); i++) {
+        for (int i = 0; i < dishy.getSteps().size(); i++) {
             if (i>0){
-                mStepMakes.add(dishy.getMakes().get(i));
+                mStepMakes.add(dishy.getSteps().get(i));
             }
         }
 
-        mEdtDescripStep.setText(dishy.getMakes().get(0).getDescription());
+        mEdtDescripStep.setText(dishy.getSteps().get(0).getDescription());
         mEdtDescripStep.setEnabled(false);
         mImgPicOne.setEnabled(false);
         mImgPicWto.setEnabled(false);
         Picasso.Builder builder = new Picasso.Builder(getContext());
-        builder.build().load(dishy.getMakes().get(0).getImage1()).into(mImgPicOne);
-        builder.build().load(dishy.getMakes().get(0).getImage2()).into(mImgPicWto);
-        mCbCheckPrepairStage.setChecked(dishy.getMakes().get(0).isRepair());
+        builder.build().load(dishy.getSteps().get(0).getImage1()).into(mImgPicOne);
+        builder.build().load(dishy.getSteps().get(0).getImage2()).into(mImgPicWto);
+        mCbCheckPrepairStage.setChecked(dishy.getSteps().get(0).isRepair());
         mCbCheckPrepairStage.setEnabled(false);
-        updateUIRCV(mStepMakes);
+        updateUIRCV(dishy.getSteps());
+    }
+
+    //Check permistion android 6.0
+    private void checkPermistion() {
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        1);
+            }
+        }
     }
 
     private void pickFromGallery(int picNumber) {
+        checkPermistion();
         //Create an Intent with action as ACTION_PICK
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        // Sets the type as image/*. This ensures only components of type image are selected
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
         if (picNumber == 1) {
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), TAKE_PIC_1);
         } else if (picNumber == 2) {

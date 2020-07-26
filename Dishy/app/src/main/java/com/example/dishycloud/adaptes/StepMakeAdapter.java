@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dishycloud.R;
 import com.example.dishycloud.models.StepMake;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -47,8 +48,13 @@ public class StepMakeAdapter extends RecyclerView.Adapter<StepMakeAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.mEdtDesc.setText(mStepMakes.get(position).getDescription());
         holder.mCbPrepair.setChecked(mStepMakes.get(position).isRepair());
-        holder.mImgOne.setImageURI(mStepMakes.get(position).getUrlImgeOne());
-        holder.mImgTwo.setImageURI(mStepMakes.get(position).getUrlImgWto());
+
+        Picasso.Builder builder = new Picasso.Builder(mContext);
+        builder.build().load(mStepMakes.get(position).getImage1()).into(holder.mImgOne);
+
+        Picasso.Builder builder2 = new Picasso.Builder(mContext);
+        builder2.build().load(mStepMakes.get(position).getImage2()).into(holder.mImgTwo);
+
         holder.mtxtOrder.setText(String.valueOf(position + 1));
         holder.mImgEdit.setOnClickListener(new View.OnClickListener() {
             @Override

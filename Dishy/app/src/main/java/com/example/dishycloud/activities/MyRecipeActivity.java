@@ -21,13 +21,16 @@ import com.example.dishycloud.models.Dishy;
 import com.example.dishycloud.models.Material;
 import com.example.dishycloud.models.Recipe;
 import com.example.dishycloud.models.StepMake;
+import com.example.dishycloud.presenters.DoRecipePresenter;
+import com.example.dishycloud.sqlites.DatabaseHelper;
+import com.example.dishycloud.views.DoRecipeView;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyRecipeActivity extends AppCompatActivity implements View.OnClickListener {
+public class MyRecipeActivity extends AppCompatActivity implements View.OnClickListener, DoRecipeView {
     private TextView mTxtNumberCount, mTxtNameRecipe, mTxtDecription,mTxtFavorite;
     private Button mBtnDiv, mBtnSum, mBtnDoRecipe;
     private ImageView mImgAvatarRecipe, mImgFavorite, mImgBack, mImgDelete, mImgUpdate;
@@ -43,6 +46,9 @@ public class MyRecipeActivity extends AppCompatActivity implements View.OnClickL
     private int numberCount;
     private int numberEater;
     private Recipe recipe;
+
+    private DoRecipePresenter mDoRecipePresenter;
+    private DatabaseHelper mDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +136,8 @@ public class MyRecipeActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+        mDoRecipePresenter = new DoRecipePresenter(this);
+        mDatabaseHelper = new DatabaseHelper(getApplicationContext());
     }
 
     private void showDialogRemove() {
@@ -198,10 +206,7 @@ public class MyRecipeActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.btn_do_recipe:
-                Intent intent = new Intent(MyRecipeActivity.this, DoRecipeActivity.class);
-                intent.putExtra("NAME", recipe.getName());
-                intent.putExtra("STEP", (Serializable) recipe.getSteps());
-                startActivity(intent);
+                mDoRecipePresenter.doRecipe(mDatabaseHelper.getToken(), recipe.getId());
                 break;
 
             case R.id.img_button_remove:
@@ -213,5 +218,18 @@ public class MyRecipeActivity extends AppCompatActivity implements View.OnClickL
                 MyRecipeActivity.this.startActivity(moveEdit);
                 break;
         }
+    }
+
+    @Override
+    public void onDoRecipeSuccess(String message) {
+        Intent intent = new Intent(MyRecipeActivity.this, DoRecipeActivity.class);
+        intent.putExtra("NAME", recipe.getName());
+        intent.putExtra("STEP", (Serializable) recipe.getSteps());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDoRecipeFail(String message) {
+
     }
 }

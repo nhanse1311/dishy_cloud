@@ -639,5 +639,61 @@ public class DishyRepositoryImp implements DishyRepository{
         });
     }
 
+    @Override
+    public void doRecipe(String token, String id, final CallBackData<String> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        String header = "Bearer " + token;
+
+        Call<ResponseBody> bodyCall =clientApi.DishyService().doRecipe(header,id);
+        bodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.code() == 200){
+                    try{
+//                        String result = response.body().string();
+
+                            callBackData.onSucess("Thành công");
+
+                    }catch (Exception e){
+                        System.out.println("Lỗi quá trình parse dữ liệu");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("Không có thông tin");
+            }
+        });
+    }
+
+    @Override
+    public void likeRecipe(String token, String id, final CallBackData<String> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        String header = "Bearer " + token;
+
+        Call<ResponseBody> bodyCall =clientApi.DishyService().likeRecipe(header,id);
+        bodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.code() == 200){
+                    try{
+//                        String result = response.body().string();
+
+                        callBackData.onSucess("Thành công");
+
+                    }catch (Exception e){
+                        System.out.println("Lỗi quá trình parse dữ liệu");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("Không có thông tin");
+            }
+        });
+    }
+
 }
 

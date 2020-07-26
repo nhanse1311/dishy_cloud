@@ -1,14 +1,18 @@
 package com.example.dishycloud.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -25,6 +29,7 @@ import com.example.dishycloud.bottomSheets.BottomSheetChooseOption;
 import com.example.dishycloud.bottomSheets.CallBackOption;
 import com.example.dishycloud.models.ChooseOptionBottomSheet;
 import com.example.dishycloud.models.Dishy;
+import com.example.dishycloud.models.Recipe;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -103,16 +108,22 @@ public class EditOneFragment extends Fragment implements View.OnClickListener, A
         mTxtLevelRecipe.setOnClickListener(this);
 
         Intent intent = getActivity().getIntent();
-        Dishy dishy = (Dishy) intent.getSerializableExtra("EDIT");
-        if (dishy!=null){
+        Recipe dishy = (Recipe) intent.getSerializableExtra("EDIT");
+        if (dishy!=null) {
             Picasso.Builder builder = new Picasso.Builder(getContext());
             builder.build().load(dishy.getImage()).into(mImgAvatar);
 
             mEdtName.setText(dishy.getName());
-            mEdtContent.setText("Ẩm thực Trung Hoa đa dạng, phong phú như một quyển tiểu thuyết dài tập, không bao giờ kể hết được. Những món ăn ở đây đều có ý nghĩa của nó. Mì trường thọ là một trong những món như vậy, chúng ta cùng tìm hiểu món ăn ngon đặc biệt này nhé!");
-            mEdtEater.setText(String.valueOf(dishy.getEater()));
-            mEdtTimeCook.setText(String.valueOf(dishy.getTime()));
-            mTxtLevelRecipe.setText(dishy.getLevel());
+            mEdtContent.setText(dishy.getDescription());
+            mEdtEater.setText(String.valueOf(dishy.getNumberPeople()));
+            mEdtTimeCook.setText(String.valueOf(dishy.getTimeCook()));
+            if (dishy.getLevelRecipe() == 1) {
+                mTxtLevelRecipe.setText("Dễ");
+            } else if (dishy.getLevelRecipe() == 2) {
+                mTxtLevelRecipe.setText("Trung bình");
+            } else if (dishy.getLevelRecipe() == 3) {
+                mTxtLevelRecipe.setText("Khó");
+            }
         }
     }
 
@@ -131,14 +142,34 @@ public class EditOneFragment extends Fragment implements View.OnClickListener, A
         });
     }
 
+    //Check permistion android 6.0
+    private void checkPermistion() {
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        1);
+            }
+        }
+    }
+
 
     private void pickFromGallery() {
         //Create an Intent with action as ACTION_PICK
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        // Sets the type as image/*. This ensures only components of type image are selected
+        checkPermistion();
+//        Intent intent = new Intent(Intent.ACTION_PICK);
+//        // Sets the type as image/*. This ensures only components of type image are selected
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
 
     }
 

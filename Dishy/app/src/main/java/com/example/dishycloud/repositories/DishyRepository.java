@@ -11,6 +11,8 @@ import com.example.dishycloud.utils.CallBackData;
 
 import java.util.List;
 
+import retrofit2.Call;
+
 public interface DishyRepository {
 
     void login(String username, String password, Context context, CallBackData<User> callBackData);
@@ -41,4 +43,8 @@ public interface DishyRepository {
     void unFollow(String token,String username, String follower, CallBackData<String> callBackData);
 
     void saveRecipe(String token, String id, CallBackData<Recipe> callBackData);
+
+    void doRecipe(String token, String id, CallBackData<String> callBackData);
+
+    void likeRecipe(String token, String id, CallBackData<String> callBackData);
 }

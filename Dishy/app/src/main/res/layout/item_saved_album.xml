@@ -47,11 +47,11 @@
 
                 <TextView
                     android:id="@+id/txt_name_recipe_chef_save"
-                    android:layout_width="@dimen/dp0"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dp5"
-                    android:layout_weight="3"
+
                     android:text="Cánh gà chiên nước mắm"
                     android:textStyle="bold" />
 

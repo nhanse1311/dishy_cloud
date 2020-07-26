@@ -26,6 +26,7 @@ import com.example.dishycloud.bottomSheets.CallBackOption;
 import com.example.dishycloud.models.ChooseOptionBottomSheet;
 import com.example.dishycloud.models.Dishy;
 import com.example.dishycloud.models.Material;
+import com.example.dishycloud.models.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +93,7 @@ public class EditTwoFragment extends Fragment implements View.OnClickListener {
         mBtnNexStep.setOnClickListener(this);
         mImgAddNewMaterial.setOnClickListener(this);
         Intent intent = getActivity().getIntent();
-        Dishy dishy = (Dishy) intent.getSerializableExtra("EDIT");
+        Recipe dishy = (Recipe) intent.getSerializableExtra("EDIT");
         mMaterials = new ArrayList<>();
         for (int i = 0; i < dishy.getMaterials().size(); i++) {
             if (i>0){
@@ -113,8 +114,14 @@ public class EditTwoFragment extends Fragment implements View.OnClickListener {
         optionBottomSheets.add(new ChooseOptionBottomSheet(2, "Kilogram"));
         optionBottomSheets.add(new ChooseOptionBottomSheet(3, "Millilit"));
         optionBottomSheets.add(new ChooseOptionBottomSheet(4, "Lit"));
-        optionBottomSheets.add(new ChooseOptionBottomSheet(5, "Muỗng cà phê"));
-        optionBottomSheets.add(new ChooseOptionBottomSheet(6, "Không có"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(5, "Muỗng"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(6, "Quả"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(7, "Củ"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(8, "Con"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(9, "Gói"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(10, "Chén"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(11, "Tô"));
+        optionBottomSheets.add(new ChooseOptionBottomSheet(12, "Không có"));
     }
 
     private void updateUIRV(List<Material> materials) {

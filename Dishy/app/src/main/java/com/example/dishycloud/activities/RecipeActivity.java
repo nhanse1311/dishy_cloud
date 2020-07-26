@@ -23,8 +23,12 @@ import com.example.dishycloud.models.Dishy;
 import com.example.dishycloud.models.Material;
 import com.example.dishycloud.models.Recipe;
 import com.example.dishycloud.models.StepMake;
+import com.example.dishycloud.presenters.DoRecipePresenter;
+import com.example.dishycloud.presenters.LikeRecipePresenter;
 import com.example.dishycloud.presenters.SaveRecipePresenter;
 import com.example.dishycloud.sqlites.DatabaseHelper;
+import com.example.dishycloud.views.DoRecipeView;
+import com.example.dishycloud.views.LikeRecipeView;
 import com.example.dishycloud.views.SaveRecipeView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -33,7 +37,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeActivity extends AppCompatActivity implements View.OnClickListener, SaveRecipeView {
+public class RecipeActivity extends AppCompatActivity implements View.OnClickListener, SaveRecipeView, DoRecipeView, LikeRecipeView {
     private TextView mTxtNumberCount, mTxtNameRecipe, mTxtNameChef, mTxtNumberFavorite, mTxtFollowing, mTxtFavorite, mTxtSaveRecipe;
     private Button mBtnDiv, mBtnSum, mBtnDoRecipe;
     private ImageView mImgAvatarRecipe, mImgFavorite, mImgSave, mImgBack, mImgChef;
@@ -56,6 +60,8 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     private Recipe recipe;
     private DatabaseHelper mDatabaseHelper;
     private SaveRecipePresenter mSaveRecipePresenter;
+    private LikeRecipePresenter mLikeRecipePresenter;
+    private DoRecipePresenter mDoRecipePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,6 +204,16 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
+        mDoRecipePresenter = new DoRecipePresenter(this);
+        mLikeRecipePresenter = new LikeRecipePresenter(this);
+        mDatabaseHelper = new DatabaseHelper(getApplicationContext());
+        List<String> listLiked = mDatabaseHelper.getListLiked(mDatabaseHelper.getUsername());
+        for (int i = 0; i < listLiked.size(); i++) {
+            if (recipe.getId().equals(listLiked.get(i))){
+                mImgFavorite.setImageResource(R.drawable.ic_favorite);
+                checkLikeRecipe = true;
+            }
+        }
     }
 
     private void updateRcvMaterial(int numberCount, int numberEater) {
@@ -215,6 +231,7 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
             mRcvStepMake.setAdapter(mStepMakeRecipeAdapter);
         } else {
             mStepMakeRecipeAdapter.notifyDataSetChanged();
+
         }
     }
 
@@ -256,22 +273,12 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.img_favorite_ra:
-                int numberFavoriteRecipe = Integer.parseInt(mTxtFavorite.getText().toString());
-                if (checkLikeRecipe == true) {
-                    mImgFavorite.setImageResource(R.drawable.ic_favorite_border);
-                    mTxtFavorite.setText(String.valueOf(numberFavoriteRecipe - 1));
-                    checkLikeRecipe = false;
-                } else {
-                    mImgFavorite.setImageResource(R.drawable.ic_favorite);
-                    mTxtFavorite.setText(String.valueOf(numberFavoriteRecipe + 1));
-                    checkLikeRecipe = true;
+                if (checkLikeRecipe == false) {
+                    mLikeRecipePresenter.likeRecipe(mDatabaseHelper.getToken(), recipe.getId());
                 }
                 break;
             case R.id.btn_do_recipe:
-                Intent intent = new Intent(RecipeActivity.this, DoRecipeActivity.class);
-                intent.putExtra("NAME", recipe.getName());
-                intent.putExtra("STEP", (Serializable) recipe.getSteps());
-                startActivity(intent);
+                mDoRecipePresenter.doRecipe(mDatabaseHelper.getToken(), recipe.getId());
                 break;
             case R.id.txt_name_save_recipe:
                 saveRecipe();
@@ -295,5 +302,32 @@ public class RecipeActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onPutRecipeFail(String fail) {
         Toast.makeText(this, "Tải về không thành công", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onDoRecipeSuccess(String message) {
+        Intent intent = new Intent(RecipeActivity.this, DoRecipeActivity.class);
+        intent.putExtra("NAME", recipe.getName());
+        intent.putExtra("STEP", (Serializable) recipe.getSteps());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDoRecipeFail(String message) {
+
+    }
+
+    @Override
+    public void onLikeRecipeSuccess(String message) {
+        mDatabaseHelper.addIdRecipeLiked(recipe.getId(), mDatabaseHelper.getUsername());
+        int numberFavoriteRecipe = Integer.parseInt(mTxtFavorite.getText().toString());
+        mImgFavorite.setImageResource(R.drawable.ic_favorite);
+        mTxtFavorite.setText(String.valueOf(numberFavoriteRecipe + 1));
+        checkLikeRecipe = true;
+    }
+
+    @Override
+    public void onLikeRecipeFail(String message) {
+
     }
 }

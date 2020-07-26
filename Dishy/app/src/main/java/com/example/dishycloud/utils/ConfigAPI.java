@@ -26,6 +26,8 @@ public class ConfigAPI {
         String UNFOLLOW = "Follower/unfollow";
 
         String SAVE_RECIPE = "Recipe";
+        String DO_RECIPE = "Recipe/doRecipe{id}";
+        String LIKE_RECIPE = "Recipe/likeRecipe{id}";
     }
 
 }
